@@ -1,0 +1,97 @@
+<%= javascript_include_tag :defaults %>
+
+<% content_for :title, "#{@course.abbr} | #{@item.name} | Forum" %>
+
+<noscript>
+  <style type="text/css">
+    #forum_tags input {
+      display: inline !important;
+    }
+    .selected {
+      text-decoration: none !important;
+    }
+    .noscript {
+      display: block;
+    }
+  </style>
+</noscript>
+
+<%= render '/layouts/nav', :navigation =>
+  [["Courses", courses_path],
+  ["#{@course.dept} #{@course.number}", @course],
+  [@item.category_s, course_items_path(@course, :category => @item.category.downcase)],
+  [@item.name, [@course, @item]],
+  ["Discussion", course_item_posts_path(@course, @item)]] %>
+
+<!--
+Allowed HTML tags:
+a abbr acronym address b big blockquote br cite code dd del dfn div dt em h1 h2 h3 h4 h5 h6
+hr i img ins kbd li ol p pre samp small span strong sub sup tt ul var
+Allowed HTML attributes:
+abbr alt cite class datetime height href name src title width xml:lang
+-->
+
+<!--script src="http://jquery.com/src/jquery-latest.js"></script-->
+<script type="text/javascript">
+  <!--
+  function togglePost(td, tr_id) {
+    a = td.firstChild;
+    shown = 'block';
+    hidden = document.getElementById(tr_id).style.display != shown;
+    a.className = hidden ? 'post_title_max' : 'post_title_min';
+    //a.innerHTML = (hidden ? '&#9652;' : '&#9662;') + a.innerHTML.substring(1);
+    document.getElementById(tr_id).style.display = hidden ? shown : 'none';
+  /* jQuery is really laggy on my laptop, so better to not use it if it adds nothing.
+   * $("#"+tr_id).slideToggle("fast");
+   */
+  }
+  function hideCheckBoxes() { // UNUSED
+    var inputs = document.forms[0].getElementsByTagName('input');
+    for (var i in inputs) {
+      if (inputs[i].type == 'checkbox')
+        inputs[i].style.display = 'none';
+    }
+  }
+  //window.onload = hideCheckBoxes;
+  // -->
+</script>
+<div id="content">
+  <%= link_to 'New post', new_course_item_post_path(@course, @item) %>
+  <% form_remote_tag :update => 'forum_posts',
+            #:method => :get,
+             :url => course_item_ajaxupdate_url(@course, @item),
+             :loading => "document.getElementById('forum_posts').innerHTML = 'Searching...'",
+             :failure => "document.getElementById('forum_posts').innerHTML = 'Sorry, there was a problem retrieving results.'",
+             :html => { :action => course_item_posts_path(@course, @item), :method => :get } do %>
+    <ul id="forum_tags">
+      <li>Filter by tags:</li>
+      <% @all_tags.each do |tag| %>
+        <li>
+          <!-- Didn't use document.getElementById('checktag_#{tag}') -->
+          <%= check_box_tag "tags[]", tag, @sel_tags.include?(tag), :style => 'display: none' %><%= link_to tag,
+            course_item_posts_url(@course, @item, :tag => tag),
+            :onclick => "if (this.className == 'unselected') { this.className = 'selected'; this.previousSibling.checked = true; } else { this.className = 'unselected'; this.previousSibling.checked = false; } return false",
+            :class => @sel_tags.include?(tag) ? "selected" : "unselected" %><%= ', ' if @all_tags.last != tag %>
+        </li>
+      <% end %>
+    </ul><div id="forum_tags_search">
+    <%= label_tag 'include_all', 'Match all tags?' %>
+    <%= check_box_tag 'include_all', 'include_all', @include_all %>
+    <%= submit_tag 'Search', :name => nil %></div>
+  <% end %>
+  <table id="forum_posts">
+    <!--tr>
+      <th class="post_check"></th>
+      <th class="post_title">Title</th>
+      <th class="post_replies">Replies</th>
+      <th class="post_author">Author</th>
+      <th class="post_date">Date</th>
+      <th>Time</th>
+    </tr-->
+    <% if @posts.empty? %>
+    <tr><td>Sorry, we didn't find any posts.</td></tr>
+    <% else %>
+      <%= render 'posts', :posts => @posts %>
+    <% end %>
+  </table>
+</div>

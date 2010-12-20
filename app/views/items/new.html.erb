@@ -1,0 +1,46 @@
+<% content_for :title, "#{@course.abbr} | Items | New" %>
+
+<%= render '/layouts/nav', :navigation =>
+  [["Courses", courses_path],
+  ["#{@course.dept} #{@course.number}", @course],
+  ["Items", course_items_path(@course)]] %>
+
+
+<div id="content">
+  <div id="content_left">
+<h1>New item</h1>
+<% form_for([@course, @item]) do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    <%= f.label :name %><br />
+    <%= f.text_field :name %>
+  </p>
+  <p>
+    <%= f.label :category %><br />
+    <%= select :item, :category, @categories %>
+  </p>
+  <p>
+    <%= f.label :due_date %><br />
+    <%= f.datetime_select :due_date, :default => Time.now.end_of_day %>
+  </p>
+  <p>
+    <%= f.label :points %><br />
+    <%= f.text_field :points %>
+  </p>
+  <p>
+    <%= f.label :weight %><br />
+    <%= f.text_field :weight %>
+  </p>
+  <p>
+    <%= f.label :description %><br />
+    <%= f.text_area :description %>
+  </p>
+  <p>
+    <%= f.submit 'Create' %>
+  </p>
+<% end %>
+
+<%= link_to 'Back', course_items_path(@course) %>
+</div>
+</div>

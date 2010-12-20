@@ -1,0 +1,70 @@
+<% content_for :title, "Courses | New" %>
+
+<%= javascript_include_tag :defaults %>
+<noscript>
+  <style type="text/css">
+    #department_name, #department_name_auto_complete {
+      display: none;
+    }
+  </style>
+</noscript>
+
+<%= render '/layouts/nav', :navigation =>
+  [["Courses", courses_path]] %>
+
+<div id="content">
+  <h1>New course</h1>
+
+  <% form_for(@course) do |f| %>
+    <%= f.error_messages %>
+
+    <p>
+      <%= f.label :name, 'Name', :class => 'form_label' %>
+      <%= f.text_field :name, :style => 'width: 15em' %>
+    </p>
+    <p>
+      <%= f.label :department_id, 'Department', :class => 'form_label' %>
+      <%= f.select :department_id, @departments, {}, :style => 'min-width: 15.4em' %>
+      <%= link_to 'Add a department', new_department_path, :style => 'margin-left: 10px; text-transform: lowercase; font-variant: small-caps' %>
+      <!--
+      Auto complete isn't useful enough, kinda slow right now
+      < %= text_field_with_auto_complete :department, :name, {}, {:method => :get} %>
+      -->
+</p>
+    <p>
+      <%= f.label :number, 'Number', :class => 'form_label' %>
+      <%= f.text_field :number, :style => 'width: 15em' %>
+    </p>
+    <p>
+      <%= f.label :term, 'Term', :class => 'form_label' %>
+      <%= f.select :term, ['Fall', 'Winter', 'Spring', 'Summer'] %>
+      <%= f.select :year, @years %>
+    </p>
+    <p id="day_options">
+      <%= f.label :days, 'Days', :class => 'form_label' %>
+      <%= check_box_tag 'm', 'M', true %>
+      <%= label_tag 'M', 'Monday' %>
+      <%= check_box_tag 't', 'T', true %>
+      <%= label_tag 'Tu', 'Tuesday' %>
+      <%= check_box_tag 'w', 'W', true %>
+      <%= label_tag 'W', 'Wednesday' %>
+      <%= check_box_tag 'r', 'R', true %>
+      <%= label_tag 'Th', 'Thursday' %>
+      <%= check_box_tag 'f', 'F', true %>
+      <%= label_tag 'F', 'Friday' %>
+      <%= check_box_tag 's', 'S', false %>
+      <%= label_tag 'Sa', 'Saturday' %>
+      <%= check_box_tag 'u', 'U', false %>
+      <%= label_tag 'Su', 'Sunday' %>
+    </p>
+    <p>
+      <%= f.label :description, {}, :class => 'form_label', :style => 'vertical-align: top' %>
+      <%= f.text_area :description, :rows => 8, :cols => 50 %>
+    </p>
+    <p>
+      <%= f.submit 'Create' %>
+    </p>
+  <% end %>
+
+  <%= link_to 'Back', courses_path %>
+</div>

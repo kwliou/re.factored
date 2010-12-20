@@ -1,0 +1,67 @@
+<% content_for :title, "#{@course.abbr} | #{@item.name} | Ratings | New Rating" %>
+
+<%= render '/layouts/nav', :navigation =>
+  [["Courses", courses_path],
+  ["#{@course.dept} #{@course.number}", @course],
+  [@item.category_s, course_items_path(@course, :category => @item.category.downcase)],
+  [@item.name, [@course, @item]],
+  ["Ratings", course_item_iratings_path(@course, @item)]]  %>
+  
+<div id="content">
+  <div id="content_left"> 
+
+<h1>New rating</h1>
+
+<% form_for([@course, @item, @irating]) do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+   <b>Easiness: Was it a free "A"? (1 being hard as hell, 5 being a walk in the park,)</b>
+    <br />
+    <%= f.radio_button(:easiness, 1)%> WTF? (1)</br>
+	<%= f.radio_button(:easiness, 2)%> prerequisite: IQ must be over 180 (2)</br>
+	<%= f.radio_button(:easiness, 3)%> eh...can't complain (3)</br>
+	<%= f.radio_button(:easiness, 4)%> GPA booster (4)</br>
+	<%= f.radio_button(:easiness, 5)%> I swear this is elementary school material (5)</br>
+  </p>
+  <p>
+    <b>Interesting?: How mind numbing was all the busy work? (1 being bored to death, 5 being absolutely fascinating)</b>
+    <br />
+    <%= f.radio_button(:interest, 1)%> I felt stupider after finishing (1)</br>
+	<%= f.radio_button(:interest, 2)%> my brain was in sleep mode the whole time (2)</br>
+	<%= f.radio_button(:interest, 3)%> eh...can't complain (3)</br>
+	<%= f.radio_button(:interest, 4)%> After the 10th time of looking over it, I still learned something new (4)</br>
+	<%= f.radio_button(:interest, 5)%> it uncovers the secrets of the universe!!! (5)</br>
+  </p>
+  <p>
+    <b>Time and Effort Required: Have you seen sunlight lately? (1 being no I have not, 5 being partied all night)</b>
+    <br />
+    <%= f.radio_button(:work_load, 1)%> even a time machine can't save you (1)</br>
+	<%= f.radio_button(:work_load, 2)%> sleep is for losers (2)</br>
+	<%= f.radio_button(:work_load, 3)%> eh...can't complain (3)</br>
+	<%= f.radio_button(:work_load, 4)%> definitely not a CS project (4)</br>
+	<%= f.radio_button(:work_load, 5)%> I don't remember doing ANY work (5)</br>
+  </p>
+  
+  <p>
+    <%= f.submit 'Create' %>
+  </p>
+<% end %>
+
+<%= link_to 'Back', course_item_iratings_path(@course, @item) %>
+  </div>
+</div>
+
+<<div id="calendar">
+  <a id="calendar_title" href="calendar">Course Calendar</a>
+  <ul>
+    <% @course.items.each do |item| %>
+	<% if (!item.past_due) %>
+    <li class="calendar_entry">
+      <%=h item.cal_date %>
+      <%= link_to item.name, [@course, item] %>
+	  <% end %>
+    </li>
+    <% end %>
+  </ul>
+</div>

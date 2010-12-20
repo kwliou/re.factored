@@ -1,0 +1,64 @@
+<div id="content">
+  <% if @current_user %>
+  <div id="content_left">
+    <div id="courses">
+      <span class="section_header">Subscribed Courses</span>
+
+        <% @current_user.courses.each do |course| %>
+          <% link_to course, :class => "name", :id => "#{course.department} #{course.number}" do %>
+            <span class="course"><%=h course.dept %> <%=h course.number %></span>
+            <span class="stryde course_info"><%=h course.name %></span>
+          <% end %>
+          <!--<%= link_to 'Edit', edit_course_path(course) %>-->
+                      <%= link_to 'Remove from list', course_unsubscribe_path(course) %>
+          <br />
+        <% end %>
+
+      <br />
+      <%= link_to 'View All Courses', url_for(:controller => 'courses', :action => 'index') %>
+      <!--<%= link_to "New course", new_course_path %>-->
+    </div>
+    <br />
+    <div id="otherstuff">
+      <span class="section_header">Latest Posts</span>
+      <% @posts.each do |post| %>
+        <div class="item_subheader">
+          <strong><%=link_to post.user.name, post.user %></strong> <%=h time_ago_in_words(post.created_at) %> ago
+          wrote under <%= link_to post.title, [post.course, post.item, post] %>
+          <div class="item_p">
+            &ldquo;<%= post.sanitize %>&rdquo;
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+  <% else %>
+    <div id="welcome">
+      <p class="stryde" id="welcome_title">What are we about?</p>
+      <p>
+        <strong>re.factored</strong> is a project by students for students. We know
+        first-hand about <abbr title="Course Management System">CMS</abbr>s that are
+        hard to navigate and highly restricted. Our goal is to give you, the student, a
+        user-driven collaborative environment. Because re.factored is meant to be an
+        invaluable utility used everyday, we made sure that this site is highly accessible
+        and can quickly bring users to what they need. That doesn't mean we need to
+        sacrifice looks, though &ndash; we still believe in a modern, clean, and usable design
+        that makes school life just a bit easier. &#9632;
+      </p>
+    </div>
+  <% end %>
+</div>
+
+<% if @current_user %>
+<div id="calendar">
+  <a id="calendar_title" href="calendar">Upcoming Events</a>
+  <ul>
+    <% @items.each do |item| %>
+    <li class="calendar_entry">
+      <%=h item.cal_date %>
+      <%= link_to item.name, [item.course, item] %>
+    </li>
+    <% end %>
+  </ul>
+</div>
+<% end %>

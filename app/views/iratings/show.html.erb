@@ -1,0 +1,56 @@
+<% content_for :title, "#{@course.abbr} | #{@item.name}" %>
+
+<%= render '/layouts/nav', :navigation =>
+  [["Courses", courses_path],
+  ["#{@course.dept} #{@course.number}", @course],
+  [@item.category_s, course_items_path(@course, :category => @item.category.downcase)],
+  [@item.name, [@course, @item]],
+  ["Ratings", course_item_iratings_path(@course, @item)]]  %>
+  
+<div id="content">
+  <div id="content_left"> 
+
+ <b>Item:</b>
+  <%=h @irating.item.name %>
+</p>
+
+<p>
+  <b>Easiness: Was it a free "A"? (1 being hard as hell, 5 being a walk in the park,)</b>
+  </br>
+  <%=h Irating.to_s_e(@irating.easiness) %>
+</p>
+
+<p>
+  <b>Interesting?: How mind numbing was all the busy work? (1 being bored to death, 5 being absolutely fascinating)</b>
+  <br/>
+  <%=h Irating.to_s_i(@irating.interest)%>
+</p>
+
+<p>
+  <b>Time and Effort Required: Have you seen sunlight lately? (1 being no I have not, 5 being partied all night)</b>
+  </br>
+  <%=h Irating.to_s_w(@irating.work_load )%>
+</p>
+
+
+
+
+<%= link_to 'Edit', edit_course_item_irating_path(@course, @item, @irating) %> 
+<%= link_to 'Back', course_item_iratings_path(@course, @item) %>
+
+</div>
+</div>
+
+<div id="calendar">
+  <a id="calendar_title" href="calendar">Course Calendar</a>
+  <ul>
+    <% @course.items.each do |item| %>
+	<% if (!item.past_due) %>
+    <li class="calendar_entry">
+      <%=h item.cal_date %>
+      <%= link_to item.name, [@course, item] %>
+	  <% end %>
+    </li>
+    <% end %>
+  </ul>
+</div>

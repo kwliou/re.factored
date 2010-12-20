@@ -1,0 +1,36 @@
+<% content_for :title, "#{@course.abbr} | #{@item.name} | Forum | Post Edit" %>
+
+<%= render '/layouts/nav', :navigation => 
+  [["Courses", courses_path],
+  ["#{@course.dept} #{@course.number}", @course],
+  [@item.category_s, course_items_path(@course, :category => @item.category.downcase)],
+  [@item.name, [@course, @item]],
+  ["Discussion", course_item_posts_path(@course, @item)]] %>
+
+<div id="content" class="post_page">
+<% form_for([@course, @item, @post]) do |f| %>
+  <%= f.error_messages %>
+
+  <p id="post_page_title">
+    Editing: <%=h @post.title %>
+  </p>
+  <p id="post_page_body">
+    <%= @post.sanitize.gsub("\n", "<br />") %>
+  </p>
+  <p>
+    <%= text_area_tag 'append', nil, :rows => 10, :cols => 50 %>
+    
+  </p>
+  <p>
+    <%= f.label :tags %><br />
+    <%= f.text_field :tags %>
+  </p>
+  <p>
+    <%= f.submit 'Update' %>
+  </p>
+<% end %>
+
+<%= link_to 'Show', [@course, @item, @post] %> |
+<%= link_to 'Back', course_item_posts_path(@course, @item) %>
+
+</div>

@@ -1,0 +1,32 @@
+<% content_for :title, 'My Profile | Edit' %>
+
+<%= render '/layouts/nav', :no_semester => true, :navigation =>
+  @profile ? [['My Profile', @user]] : [['Users', users_path]] %>
+
+<div id="content">
+  <h1>Editing My Profile</h1>
+
+  <% form_for(@user) do |f| %>
+    <%= f.error_messages %>
+
+    <p>
+      <%= f.label :first_name %><br />
+      <%= f.text_field :first_name %>
+    </p>
+    <p>
+      <%= f.label :last_name %><br />
+      <%= f.text_field :last_name %>
+    </p>
+    <p>
+      Facebook ID<br />
+      <%= f.text_field :fb_id %>
+    </p>
+    <p>
+      <%= f.label :email %><br />
+      <%= f.text_field :email %>
+    </p>
+    <p>
+      <%= f.submit 'Update' %>
+    </p>
+  <% end %>
+</div>

@@ -1,0 +1,55 @@
+<% content_for :title, "Courses" %>
+<%= stylesheet_link_tag 'courses_index' %>
+
+<script type="text/javascript" src="/javascripts/jquery-1.4.4.js"></script>
+<script type="text/javascript" src="/javascripts/highcharts.js"></script>
+
+<%= render '/layouts/nav', :navigation =>
+  [["Courses", courses_path]] %>
+  
+<div id="content">
+  <h1 id="list_courses" style="width:300px;">Listing courses
+	<div style="float:right;">
+		<form action="<%= courses_path %>" method="GET">
+			<select id="select_semester" name="semester" onchange="this.form.submit()">
+			<% for sem in @semesters %>
+				<% if sem == @semester %>
+					<option value="<%= sem %>" selected><%= sem %></option>
+				<% else %>
+					<option value="<%= sem %>"><%= sem %></option>
+				<% end %>
+			  
+			<% end %>
+			</select>
+		</form>
+    </div>
+  </h1>
+
+  <% if @courses.length == 0 %>
+  	No courses found for the selected term<br />
+  <% else %>
+  <table id="courses_list">
+    <tr>
+      <th>Department</th>
+      <th>Number</th>
+      <th>Days</th>
+      <th>Description</th>
+      <th>Name</th>
+    </tr>
+
+  <% @courses.each do |course| %>
+    <tr>
+      <td><%=h course.department_name %></td>
+      <td><%=h course.number %></td>
+      <td><%=h course.days %></td>
+      <td><%=h course.description %></td>
+      <td><%=h course.name %></td>
+      <td><%= link_to 'View', course %></td>
+      <td><%= link_to 'Subscribe', course_subscribe_path(course) %></td>
+    </tr>
+  <% end %>
+  </table>
+  <% end %>
+<br />
+  <%= link_to 'New course', new_course_path %>
+</div>

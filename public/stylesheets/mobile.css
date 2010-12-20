@@ -1,0 +1,122 @@
+body {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    /*background: #d1e751; */
+    font-family: "Tahoma", "Verdana", san-serif;
+    color: #979899;
+    overflow: hidden;
+}
+
+#main {
+    /*background-color: #d1e751;
+    
+    width: 100%;
+    height: 100%;
+    margin: auto;
+    margin-bottom: -20px;
+    position: relative;
+    */
+}
+
+#maincol {
+    /* margin-top: 0;
+    margin-bottom: 0;
+    background-color: #ffffff;
+    position:relative;
+    padding: 0;
+    float:left;
+    */
+}
+a {
+    color: #979899;
+}
+#header {
+    /*width: 100%;*/
+    font-size: 13pt;
+    color: #646566;
+    padding: 5px 0 5px 5px;
+    background-color: #ffffff;
+}
+#header a {
+    color: #646566;
+}
+#banner {
+    /*width: 100%;*/
+    padding: 2px 0 5px 0;
+    background: url("/images/logo.png") #d1e751 no-repeat left center;
+    height: 96px;
+}
+#login_form {
+    width: 80%;
+    margin: 15px auto;
+    line-height: 150%;
+    /*
+    background: #d1e751;
+    max-width: 256px;
+    text-align: center;
+    float: left;
+    */
+    
+}
+#login_form input {
+    display: block;
+    color: #757575;
+    padding: 0.5%;
+    margin-right: 1px; /* Why do input boxes not have correct width?! */
+    /*margin: 10px;*/
+}
+.input_label {
+    font-size: 10pt;
+    color: #878889;
+    font-weight: bold;
+    /*padding-left: 1px;*/
+}
+
+.login_button {
+    /*display: inline;*/
+    
+    margin: 10px auto !important;
+    border: none;
+    width: 120px;
+    height: 52px;
+    padding: 20px 0 0 0;
+    background: transparent url("/images/button_big.png") no-repeat;
+}
+#content {
+    /*clear: left;
+    padding: 20px 3% 0 3%;*/
+    
+}
+#welcome {
+    text-align: justify;
+    line-height: 250%;
+    padding: 0 5% 0 5%;
+}
+
+#welcome_title {
+    margin-top: 0;
+    font-size: 18pt;
+}
+
+#footer {
+    text-align: center;
+    background-color: #ffffff;
+    padding: 10px 0 10px 0;
+    clear: both;
+    /*
+    bottom: 0;
+    position: absolute;
+    width: 100%;
+    */
+
+}
+#footer_links a:first-child {
+    border: none;
+}
+#footer_links a {
+    font-size: 10.5px;
+    padding: 0 2% 0 2%;
+    border-left: 1px #dddddd solid;
+}

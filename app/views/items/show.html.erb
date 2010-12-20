@@ -1,0 +1,48 @@
+<% content_for :title, "#{@course.abbr} | #{@item.name}" %>
+
+<%= render '/layouts/nav', :navigation =>
+  [["Courses", courses_path],
+  ["#{@course.dept} #{@course.number}", @course],
+  [@item.category_s, course_items_path(@course, :category => @item.category.downcase)],
+  [@item.name, [@course, @item]]] %>
+
+<div id="content">
+  <h1 style="display: inline"><%=h @item.name %></h1> <%= link_to 'Edit', edit_course_item_path(@course, @item) %>
+  <p>
+    <span class="item_h2">Due <%=h @item.due_date_s %></span>
+    &nbsp;<%=h time_ago_in_words(@item.due_date) %>
+    <%=h @item.due_date.future? ? 'from now' : 'ago' %>
+  </p>
+
+  <p>
+    <span class="item_h2">Points</span>
+    <%=h @item.points %>
+    <span class="item_h2">Weight</span>
+    <%=h @item.weight %>%
+  </p>
+  
+  <div class="item_h2">Description</div>
+  <div class="item_p">
+    <%= sanitize @item.description, :attributes => 'abbr alt cite datetime height href name src title width rowspan colspan rel' %>
+  </div>
+  <div>
+    <%=h link_to 'Rate this item', course_item_iratings_path(@course, @item), :class => "item_h2" %>
+  </div>
+  <br />
+  <div>
+    <%=h link_to 'Discussion', course_item_posts_path(@course, @item), :class => "item_h2" %>
+  </div>
+  <br />
+  
+  <div class="item_subheader">
+    <% if @post %>
+      <strong><%=h @post.user.name %></strong> <%=h time_ago_in_words(@post.created_at) %> ago
+      wrote under <%= link_to @post.title, [@course, @item, @post] %>
+      <div class="item_p">
+        &ldquo;<%= @post.body.length > 100 ? "#{@post.sanitize[0, 100]}&#133;" : @post.sanitize %>&rdquo;
+      </div>
+    <% else %>
+      <div class="item_p">No posts found.</div>
+    <% end %>
+  </div>
+</div>

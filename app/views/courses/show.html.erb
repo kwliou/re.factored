@@ -1,0 +1,51 @@
+<%= stylesheet_link_tag 'courses' %>
+<% content_for :title, @course.abbr %>
+
+<%= render '/layouts/nav', :navigation =>
+  [["Courses", courses_path],
+  ["#{@course.dept} #{@course.number}", @course]] %>
+<div id="add_item">
+  <%= link_to 'New Item', new_course_item_path(@course) %>
+</div>
+<div id="content">
+  <div id="content_left">
+    <div>
+      <%= link_to "Assignments, Projects", course_items_path(@course, :category => "assignment project"), :class => "course_action" %>
+      <span class="stryde course_action_comment">Time to work!</span>
+    </div>
+    <div>
+      <%= link_to "Exams, Quizzes, etc.", course_items_path(@course, :category => "exam quiz"), :class => "course_action" %>
+      <span class="stryde course_action_comment">Study buddy?</span>
+    </div>
+    <div>
+      <%= link_to "All Course Items", course_items_path(@course), :class => "course_action" %>
+      <span class="stryde course_action_comment">All that other stuff.</span>
+    </div>
+    <div>
+      <a class="course_action" href="<%= url_for(course_grades_path(@course)) %>">Grades</a>
+      <span class="stryde course_action_comment">Cross your fingers!</span>
+    </div>
+    <div>
+      <%= link_to "Course Info", edit_course_path(@course), :class => "course_action" %>
+      <span class="stryde course_action_comment">What's this all about?</span>
+    </div>
+    <div>
+      <%= link_to "Ratings", course_ratings_path(@course), :class => "course_action" %>
+      <span class="stryde course_action_comment">What did you think?</span>
+    </div>
+  </div>
+</div>
+
+<div id="calendar">
+  <a id="calendar_title" href="calendar">Course Calendar</a>
+  <% if @items %>
+    <ul>
+      <% @items.each do |item| %>
+      <li class="calendar_entry">
+        <%=h item.cal_date %>
+        <%= link_to item.name, [@course, item] %>
+      </li>
+      <% end %>
+    </ul>
+  <% end %>
+</div>
