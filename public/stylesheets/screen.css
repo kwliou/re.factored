@@ -1,11 +1,9 @@
-/*
 @font-face {
-    font-family: Museo;
-    src: url('/html/Museo_Slab_500.otf');
+    font-family: "Museo Slab 500";
+    src: url('/Museo_Slab.otf');
     font-weight: normal;
     font-style: normal;
 }
-*/
 
 html, body {
     height: 100%;
@@ -14,88 +12,91 @@ html, body {
     padding: 0;
 }
 body {
-    background: #fff;
+    background: #f0f0f0;
     font-family: "Tahoma", "Helvetica", "Arial", "Verdana", sans-serif;
-    color: #979899;
+    color: #979899; /*#7D7E7F;*/
+}
+#bg_left {
+    position: fixed;
+    margin-left: -20px;
+    background: #f0f0f0 url("/images/left.png");
+    height: 100%;
+    width: 20px;
+}
+#bg_right {
+    position: fixed;
+    left: 95%;
+    width: 20px;
+    height: 100%;
+    background: #f0f0f0 url("/images/right.png");
 }
 h1 {
-    font-family: "Tahoma", sans-serif;
-    font-size: 15pt;
+    font-family: "Arvo", "Tahoma", sans-serif;
+    font-size: 16pt;
     line-height: normal;
     margin: 0 0 1em 0;
-
+}
+a {
+    color: #97a53b;
+    /*
+    text-decoration: none;
+    font-weight: bold;
+    */
+}
+a:hover {
+    color: #aebf44;
 }
 abbr { /* IE doesn't have this style by default */
     border-bottom: 1px dotted;
 }
-
+textarea {
+    font-family: "MS Shell Dlg", "Tahoma", "Helvetica", "Arial", "Verdana", sans-serif;
+    font-size: 10.5pt;
+}
 #login_error {
-	float:right;
-	margin-right:185px;
+    float:right;
+    margin-right:185px;
 }
 
 .table_list td {
-	padding-right:36px;	
+    padding-right:36px;
 }
 
 .fill_width {
-	width:100%;
-}
-
-#bg {
-    width: 100%;
-    position: fixed;
-    top: 0;
-    height: 100%;
-    /*
-    margin: 0;
-    padding: 0;
-    display: inline;
-    background: url("/images/grad.png") repeat-y;
-    */
+    width:100%;
 }
 
 #users_list {
-	color:#555;
+    color:#555;
 }
 
 #users_list td {
-	padding-right:80px;
+    padding-right:80px;
 }
 
 .index_fb_link {
-	color: #3031b5;
-	text-decoration:none;
-	font-weight:bold;
-}
-
-#bg img {
-    min-width: 900px;
-    width: 100%;
-    height: 100%;
-    /*
-    margin-bottom: -20px;
-    background: url("/images/grad.png") repeat-y;
-    */
-
+    color: #3031b5;
+    text-decoration:none;
+    font-weight:bold;
 }
 
 .facebook_profile {
-	color: #3031b5;
-	font-size:14px;
-	text-decoration:none;
-	margin-left:12px;
-	font-weight:bold;
+    color: #3031b5;
+    font-size:14px;
+    text-decoration:none;
+    margin-left:12px;
+    font-weight:bold;
 }
 
 .facebook_profile:hover {
-	color: #4e59f9;
+    color: #4e59f9;
 }
 
 #welcome_title {
     font-family: "Museo Slab 500", "Fertigo Pro", "edelsans", "Anivers", "Helvetica", "Verdana", sans-serif;
-    margin-top: 0;
     font-size: 17pt;
+    margin: 0;
+    line-height: 100%;
 }
 #welcome {
     font-family: "Constantia", "Palatino Linotype", "Georgia", "Garamond", "Times New Roman", serif;
@@ -104,10 +105,9 @@ abbr { /* IE doesn't have this style by default */
     padding: 20px 5% 0 5%;
     text-shadow: 0px 1px 1px #fff;
 }
-
 #main {
     width: 90%;
-    background: #fff url("/images/bg.png");
+    background: #fff;
     margin: 0 auto; /*margin-left: 10%;*/
     height: 100%;
     margin-bottom: -20px;
@@ -116,42 +116,26 @@ abbr { /* IE doesn't have this style by default */
 
 #top {
     height: 94%; /* Need this for pages to fill window */
-    color: #979899;
+    color: #7d7e7f;
 }
-
 #maincol {
     margin-top: 0;
     margin-bottom: 0;
-    background: #fff url("/images/bg.png"); /* #FFFFFA; */
+    background: #fff; /* #FFFFFA; */
     position:relative;	/* This fixes the IE7 overflow hidden bug */
     padding: 0;
     float:left;
     width:100%;			/* width of whole page */
-    /*
-    clear:both;
-    
-    /*overflow:hidden;		/* This chops off any overhanging divs */
 }
-a {
-    color: #979899;
-}
-
-a:hover {
-    color: #a4a4a5;
-}
-
 #school {
     float: right;
 }
 #header {
-    width: 90%;
+    width: 99%;
     font-size: 11pt;
     color: #646566;
     padding: 5px;
-    background: #fff url("/images/bg.png");
-}
-#header a {
-    color: #646566;
+    background: #fff;
 }
 #banner {
     padding: 2px 0 5px 0;
@@ -267,74 +251,87 @@ we don't have to rely on proprietary attributes but there's no time
 }
 #content {
     clear: left;
-	text-align:left;
+    text-align:left;
     padding: 20px 3% 0 3%;
 }
-
+.form input[type="text"], .form input[type="password"] {
+    width: 15em;
+}
+.form label {
+    width: 10em;
+    display: inline-block;
+    line-height: 1.5em;
+    font-weight: bold;
+    font-size: 11pt;
+}
 .section_header {
     display: block;
     margin: 0 0 6px 0;
-    width: 85%;
+    width: 95%;
     font-size: 12pt;
-    font-family:  "Whitney HTF SC", "Century Gothic", "Verdana", "Lucida Sans Unicode", "Tahoma", sans-serif;
+    font-family: "edelsans", "Century Gothic", "Verdana", "Lucida Sans Unicode", "Tahoma", sans-serif;
     border-bottom: 1px #ccc solid;
-    text-transform: uppercase;
+    text-transform: lowercase;
     letter-spacing: 0.5pt;
 }
 #content_left {
     float: left;
-    width: 65%;
+    width: 60%;
 }
 #courses .name {
     text-decoration: none;
-    margin-right: 10px;
+    margin-right: 2px;
 }
 .course {
+    padding-left: 2px;
     line-height: 30pt;
     font-weight: bold;
     font-size: 14pt;
+    color: #979899;
     /*text-shadow: 0px 1px 1px #fff;*/
 }
 .course_action {
-    text-decoration: none;
-    width: 14em;
+    width: 13em;
     display: inline-block;
     line-height: 30pt;
     font-weight: bold;
     font-size: 14pt;
+    
 }
-
-.block {
-	display:block;
+.course_action a {
+    color: #979899;
+    text-decoration: none;
 }
-
-.small {
-	float:left;
-	font-size:14px;	
+.course_action a:hover {
+    color: #7d7e7f;
 }
 
 .course_info {
     padding-left: 10px;
-    vertical-align: baseline;
-    position: relative;
-    bottom: 2px;
-    font-family: "St Ryde Regular", "edelsans", "Tahoma", sans-serif;
-    font-size: 13pt;
+    font-family: "Arvo", "Museo Sans 500", "Colaborate-Regular", "St Ryde Regular", "edelsans", "Tahoma", sans-serif;
+    font-size: 13.5pt;
     color: #a5a5a5;
 }
 .course_action_comment {
     padding: 0 0 0 24px;
+    /*
     vertical-align: baseline;
     position: relative;
     bottom: 1px;
-    font-family: "St Ryde Regular", "edelsans", "Tahoma", sans-serif;
-    font-size: 14pt;
+    */
+    font-family: "Museo Sans 500", "St Ryde Regular", "edelsans", "Tahoma", sans-serif;
+    font-size: 13pt;
     color: #a5a5a5;
 }
 #calendar {
     float: right;
     width: 35%;
     font-weight: bold;
+    border: 2px lightgray solid;
+    -webkit-border-radius: 6px;
+    -moz-border-radius: 6px;
+    padding: 8px;
+    margin-right: 3%;
 }
 #calendar ul {
     padding-left: 5%;
@@ -386,7 +383,6 @@ we don't have to rely on proprietary attributes but there's no time
     font-size: 11pt;
     line-height: 150%;
     font-family: "Georgia", "Garamond", "Times New Roman", serif;
-    /*font-family: 'Segoe UI', 'Lucida Sans Unicode', 'Droid Sans', sans-serif;*/
 }
 .item_subheader {
     font-size: 11pt;
@@ -446,10 +442,6 @@ we don't have to rely on proprietary attributes but there's no time
 }
 .post { /* THIS IS A TR */
     height: 1.5em;
-    /*
-    border-bottom: 1px dotted black;
-    width: 100%;
-    */
 }
 .post:hover, .post:hover a {
     color: #000;
@@ -461,10 +453,6 @@ we don't have to rely on proprietary attributes but there's no time
     padding-top: 0;
     border-bottom: 1px dotted black;
     padding-bottom: 4px;
-    /*
-    height: 1.5em;
-    text-decoration: none;
-    */
 }
 .post a {
     color: #646566;
@@ -475,7 +463,6 @@ we don't have to rely on proprietary attributes but there's no time
 }
 .post_check {
     width: 1.5em;
-        /*border-bottom: 1px dotted black;*/
 }
 .post_title {
  
@@ -494,15 +481,12 @@ we don't have to rely on proprietary attributes but there's no time
 }
 .post_replies {
     width: 5.5em;
-    /*width: 10%;*/
 }
 .post_author {
     min-width: 6.5em;
-    /*width: 15%;*/
 }
 .post_date {
     width: 6.5em;
-    /*width: 20%;*/
 }
 .post_time {
     text-align: right !important;
@@ -555,7 +539,6 @@ we don't have to rely on proprietary attributes but there's no time
     font-size: 11pt;
 }
 #post_page_title {
-    /*text-decoration: underline;*/
     font-size: 11.5pt;
     font-weight: bold;
     margin-right: 10px;
@@ -598,7 +581,7 @@ we don't have to rely on proprietary attributes but there's no time
 }
 
 #footer {
-    background: #fff url("/images/bg.png");
+    background: #fff;
     text-align: center;
     padding: 7px 0 7px 0;
     /*
@@ -611,7 +594,9 @@ we don't have to rely on proprietary attributes but there's no time
     font-size: 9.5pt;
 }
 #footer_links a {
+    color: #979899;
     text-shadow: 0px 1px 1px #fff;
+    font-weight: normal;
 }
 #footer_links li:first-child {
     border-left: none;
@@ -635,30 +620,28 @@ we don't have to rely on proprietary attributes but there's no time
 #select_course_sem {
 	margin-top:1px;
 }
-/* Right now this is for new/edit course form */
-.form_label {
-    width: 7.5em;
-    display: inline-block;
-    line-height: 1.5em;
-    font-weight: bold;
-    font-size: 11pt;
-}
 #day_options {
     font-size: 10pt;
 }
-#M { /* Monday checkbox */
-    margin-left: 0 !important;
+.day_label, #day_options input[type="checkbox"] {
+    width: auto !important;
+    font-weight: normal !important;
+    font-size: 10pt !important;
+}
+#day_options #m {
+    margin-left: 2px;
 }
 #day_options input {
     vertical-align: middle;
-    margin-top: 1px;
+    margin-top: 0;
     margin-left: 20px;
 }
-
+/*
 #list_courses {
-	width:300px;
+    width:300px;
 }
 
 #select_semester {
 	margin-top: 6px;
 }
+*/
