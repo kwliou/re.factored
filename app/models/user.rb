@@ -1,6 +1,8 @@
 class User < ActiveRecord::Base
   acts_as_authentic
   has_and_belongs_to_many :courses
+  has_many :schools, :through => :enrollments
+  has_many :enrollments
   has_many :posts
   has_many :grades
   has_many :ratings
@@ -29,7 +31,14 @@ class User < ActiveRecord::Base
   def rated_item(item)
   	item.iratings.find_by_user_id(self.id)
 	end
-	
+
+  def school_courses
+    course_hash = {}
+    schools.each { |s| course_hash[s] = [] }
+    courses.each {|c| course_hash[c.department.school].unshift(c) }
+    return course_hash
+  end
+
 	def items_with_grades(course)
     items = course.items
 	  grades = self.grades.reject { |g| g.item.course != course }

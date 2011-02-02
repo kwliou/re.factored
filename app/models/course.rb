@@ -1,7 +1,6 @@
 class Course < ActiveRecord::Base
   include ApplicationHelper
   has_many :items
-  has_many :blurbs
   has_and_belongs_to_many :users
   has_many :ratings, :dependent=>:destroy
   belongs_to :department
@@ -11,10 +10,10 @@ class Course < ActiveRecord::Base
   #before_save { |course| course.department = course.department.titleizev2 }
 
   @@terms = {
-    "FA" => "Fall",
-    "WI" => "Winter",
-    "SP" => "Spring",
-    "SU" => "Summer"
+    "fa" => "Fall",
+    "wi" => "Winter",
+    "sp" => "Spring",
+    "su" => "Summer"
   }
 
   def pretty_term
@@ -36,24 +35,13 @@ class Course < ActiveRecord::Base
     self.department.name
   end
   
-  def class_performance
-    
-  end
-  
-  
-  def Course.find_by_param(param)
-      dept, number, term_year = param.split('_')
-      term = @@terms[term_year[0, 2]]
-      year = ("20" + term_year[2, 4]).to_i
-      courses = Department.find_by_abbr(dept).courses
-      course = nil
-      courses.each { |c|
-        if c.number == number && c.term == term && c.year == year
-          course = c
-        end 
-      }
-      
-      return course
+  def Course.find_by_params(params)
+    dept, number = (params[:id] || params[:course_id]).split('_')
+    term = params[:term]
+    year = "20#{params[:year]}"
+    school = School.find_by_param(params[:school_id])
+    dept_id = school.departments.find_by_abbr(dept).id
+    Course.find(:first, :conditions => ["department_id = ? AND number = ? AND term = ? AND year = ?", dept_id, number, term, year])
   end
   
   def Course.all_semesters
@@ -73,15 +61,33 @@ class Course < ActiveRecord::Base
   def dept
     Department.find(department_id).abbr.upcase
   end
-  
+
   def abbr
     "#{dept} #{number}"
   end
-  
-  def to_param
-    "#{dept}_#{number}_#{term.upcase[0, 2]}#{year.to_s[2, 4]}"
+
+  def year_abbr
+    "#{year}"[2, 4]
   end
   
+  def to_param
+    #"#{dept}_#{number}_#{term.upcase[0, 2]}#{year.to_s[2, 4]}"
+    "#{dept}_#{number}"
+  end
+
+  def params
+    { :school_id => school.to_param,
+      :id => to_param,
+      :term => term, :year => year_abbr
+    }
+  end
+
+  def nest_params
+    { :school_id => school.to_param,
+      :course_id => to_param,
+      :term => term, :year => year_abbr
+    }
+  end
   def e_rating
     if (raters == 0)
       return "Someone needs to rate this course!"
@@ -112,7 +118,14 @@ class Course < ActiveRecord::Base
     rating_s=rating.to_s
     return Rating.to_s_w(rating)
   end
-  
+
+  def school_id
+    Department.find(department_id).school_id
+  end
+  def school
+    Department.find(department_id).school
+  end
+
   def full_name
     return self.department.name << "	" << self.number
   end

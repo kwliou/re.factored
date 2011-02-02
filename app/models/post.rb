@@ -1,6 +1,7 @@
 class Post < ActiveRecord::Base
   belongs_to :user #, :foreign_key => "user_username"
   belongs_to :item
+  has_and_belongs_to_many :tags
   has_many :replies, :class_name => 'Post', :foreign_key => 'parent_id'
   belongs_to :parent, :class_name => 'Post'
 
