@@ -1,5 +1,5 @@
 class DepartmentsController < ApplicationController
-  before_filter :get_current_user # :get_course doesn't work on Heroku
+  before_filter :get_current_user, :get_school # :get_course doesn't work on Heroku
   auto_complete_for :department, :name
 
   layout "scaffold"
@@ -18,8 +18,8 @@ class DepartmentsController < ApplicationController
   # GET /departments/1
   # GET /departments/1.xml
   def show
-    @department = Department.find(params[:id])
-
+    @department = Department.find_by_param(params[:id])
+    
     respond_to do |format|
       format.html # show.html.erb
       format.xml  { render :xml => @department }
@@ -39,7 +39,7 @@ class DepartmentsController < ApplicationController
 
   # GET /departments/1/edit
   def edit
-    @department = Department.find(params[:id])
+    @department = Department.find_by_param(params[:id])
   end
 
   # POST /departments
@@ -49,7 +49,8 @@ class DepartmentsController < ApplicationController
 
     respond_to do |format|
       if @department.save
-        format.html { redirect_to(@department, :notice => 'Department was successfully created.') }
+        @school.departments << @department
+        format.html { redirect_to([@school, @department], :notice => 'Department was successfully created.') }
         format.xml  { render :xml => @department, :status => :created, :location => @department }
       else
         format.html { render :action => "new" }
@@ -61,7 +62,7 @@ class DepartmentsController < ApplicationController
   # PUT /departments/1
   # PUT /departments/1.xml
   def update
-    @department = Department.find(params[:id])
+    @department = Department.find_by_param(params[:id])
 
     respond_to do |format|
       if @department.update_attributes(params[:department])
@@ -77,7 +78,7 @@ class DepartmentsController < ApplicationController
   # DELETE /departments/1
   # DELETE /departments/1.xml
   def destroy
-    @department = Department.find(params[:id])
+    @department = Department.find_by_param(params[:id])
     @department.destroy
 
     respond_to do |format|
@@ -91,4 +92,8 @@ private
   def get_current_user
     @current_user = current_user
     redirect_to root_url if @current_user.nil?
+  end
+
+  def get_school
+    @school = School.find_by_param(params[:school_id])
   end

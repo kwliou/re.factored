@@ -4,6 +4,8 @@ class MainController < ApplicationController
     @current_user = current_user
     @user_session = UserSession.new
     if @current_user
+      @single_school = (@current_user.schools.length == 1)
+      @school_courses = @current_user.school_courses
       @courses = @current_user.courses
       course_ids = @courses.map {|c| c.id}
       @items = Item.find(:all, :limit => 10, :conditions => ['course_id IN (?) AND due_date >= ?', course_ids, Time.zone.now], :order => 'due_date')

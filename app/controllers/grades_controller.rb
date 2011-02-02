@@ -1,6 +1,6 @@
 class GradesController < ApplicationController
   layout "scaffold"
-  before_filter :get_current_user, :get_course
+  before_filter :get_current_user, :get_school, :get_course
   
   # GET /grades
   # GET /grades.xml
@@ -95,7 +95,10 @@ private
     @current_user = current_user
     redirect_to root_url if @current_user.nil?
   end
+  def get_school
+    @school = School.find_by_param(params[:school_id])
+  end
   def get_course
-    @course = Course.find_by_param(params[:course_id]) if params[:course_id]
+    @course = Course.find_by_params(params)
   end
 end

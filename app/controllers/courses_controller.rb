@@ -1,5 +1,5 @@
 class CoursesController < ApplicationController  
-  before_filter :get_current_user # :get_course doesn't work on Heroku
+  before_filter :get_current_user, :get_school # :get_course doesn't work on Heroku
 
   layout 'scaffold'
 
@@ -9,13 +9,13 @@ class CoursesController < ApplicationController
   end
 
   def subscribe
-    @course = Course.find_by_param(params[:course_id])
+    @course = Course.find_by_params(params)
     @current_user.courses << @course if !@current_user.courses.include?(@course)
     redirect_to :action => 'show', :id => @course.to_param
   end
   
   def unsubscribe
-    @course = Course.find_by_param(params[:course_id])
+    @course = Course.find_by_params(params)
     @current_user.courses.delete(@course)
     redirect_to root_url
 	end
@@ -23,50 +23,26 @@ class CoursesController < ApplicationController
   # GET /courses
   # GET /courses.xml
   def index
-    # if has param course
-    # redirect to that course
-    if params[:course]
-      course = Course.find(params[:course])
-      redirect_to course_path(course) and return
-    elsif params[:semester]
-      term, year = params[:semester].split(" ")
-      @semester = params[:semester]
-      @courses = Course.find(:all, :conditions => {:term => term, :year => year})
-    else
-      @courses = Course.find(:all, :conditions => {:term => 'Fall', :year => 2010})
-    end
+#    if params[:semester]
+#      term, year = params[:semester].split(" ")
+#      @semester = params[:semester]
+#      @courses = Course.find(:all, :conditions => {:term => term, :year => year})
+#    else
+#      @courses = Course.find(:all, :conditions => {:term => 'Fall', :year => 2010})
+#    end
+    @courses = Course.all
     @semesters = Course.all_semesters
     
-    #@user_session = UserSession.new
     respond_to do |format|
       format.html # index.html.erb
       format.xml  { render :xml => @courses }
     end
   end
 
-  def deadline
-    # For each item, we went due date and radius
-    course = Course.find(params[:id])
-    items = course.items
-    data = []
-    items.each do |item|
-      data << {:name => item.name, :due_date => item.due_date,
-               :points => item.points}
-    end
-    
-    # Return deadline data encoded as JSON
-    j = ActiveSupport::JSON
-    deadline = j.encode(data)
-    respond_to do |format|
-        format.json  { render :json => deadline }
-    end
-    
-  end
-  
   # GET /courses/1
   # GET /courses/1.xml
   def show
-    @course = Course.find_by_param(params[:id])
+    @course = Course.find_by_params(params)
     @items = @course.items.find(:all, :limit => 6, :conditions => ['due_date >= ?', Time.zone.now], :order => 'due_date')
 
     respond_to do |format|
@@ -81,21 +57,15 @@ class CoursesController < ApplicationController
     @course = Course.new
     @departments = Department.find(:all, :order => 'name').map { |c| [c.name, c.id] }
     @years = Course.year_limits
-    #win.getContent().update("<h1>Hello world !!</h1>");
-    #win.showCenter();
     respond_to do |format|
       format.html # new.html.erb
       format.xml  { render :xml => @course }
     end
   end
 
-#  def update_abbr
-#    dept = Department.find_by_name(params[:department])
-#    dept || dept.abbr
-#  end
   # GET /courses/1/edit
   def edit
-    @course = Course.find_by_param(params[:id])
+    @course = Course.find_by_params(params)
     @departments = Department.find(:all, :order => 'name').map { |c| [c.name, c.id] }
     @years = Course.year_limits
     @days = @course.days.each_char.map { |c| c == c.upcase }
@@ -104,6 +74,7 @@ class CoursesController < ApplicationController
   # POST /courses
   # POST /courses.xml
   def create
+    #params[:course][:term] = params[:course][:term][0, 2]
     params[:course][:days] = ''
     'mtwrfsu'.each_char do |day|
       params[:course][:days] += params[day] || day
@@ -132,10 +103,10 @@ class CoursesController < ApplicationController
     'mtwrfsu'.each_char do |day|
       params[:course][:days] += params[day] || day
     end
-    @course = Course.find_by_param(params[:id])
+    @course = Course.find_by_params(params)
     respond_to do |format|
       if @course.update_attributes(params[:course])
-        format.html { redirect_to(@course, :notice => 'Course was successfully updated.') }
+        format.html { redirect_to(course_url(@course.params), :notice => 'Course was successfully updated.') }
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }
@@ -147,7 +118,7 @@ class CoursesController < ApplicationController
   # DELETE /courses/1
   # DELETE /courses/1.xml
   def destroy
-    @course = Course.find_by_param(params[:id])
+    @course = Course.find_by_params(params)
     @course.destroy
 
     respond_to do |format|
@@ -162,7 +133,7 @@ private
     @current_user = current_user
     redirect_to root_url if @current_user.nil?
   end
-  
-  def get_course
-    @course = Course.find_by_param(params[:id]) if params[:id]
+
+  def get_school
+    @school = School.find_by_param(params[:school_id])
   end
