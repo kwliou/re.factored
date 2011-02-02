@@ -1,13 +1,10 @@
-<p>
-  <b>Name:</b>
-  <%=h @department.name %>
-</p>
+<% content_for :title, "#{@school.name} | #{@department.name}" %>
 
-<p>
-  <b>Abbr:</b>
-  <%=h @department.abbr %>
-</p>
+<div id="content">
+  <h1>Department of <%=h @department.name %></h1>
 
-
-<%= link_to 'Edit', edit_department_path(@department) %> |
-<%= link_to 'Back', departments_path %>
+  <% @department.courses.each do |course| %>
+    <strong><%= link_to course.abbr, course_path(course.params) %></strong>
+    <%=h course.name %>
+  <% end %>
+</div>

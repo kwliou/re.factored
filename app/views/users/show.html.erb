@@ -16,8 +16,7 @@
       <%= link_to course.abbr, course %> (<%=h course.name %>)<br />
     <% end %>
   </p>
-  <%= link_to 'Posts', user_posts_path(@user) %>
-  <p>
-    <%= link_to 'Edit my information', edit_user_path(@user) if @profile %>
-  </p>
+  <p><%= link_to 'Posts', user_posts_path(@user) %></p>
+  <p><%= link_to 'Schools', user_schools_path(@user) %></p>
+  <p><%= link_to 'Edit my information', edit_user_path(@user) if @profile %></p>
 </div>

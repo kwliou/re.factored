@@ -16,10 +16,9 @@
     </script>
   </head>
   <body>
-    <div id="bg">
-      <img src="/images/grad.png" alt="" />
-    </div>
     <div id="main">
+      <div id="bg_left"></div>
+      <div id="bg_right"></div>
       <div id="top">
         <div id ="header">
           Welcome, <%= link_to "#{@current_user.first_name} #{@current_user.last_name}", @current_user %>! Want to <%= link_to "sign out", logout_path %>?

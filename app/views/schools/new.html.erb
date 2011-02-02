@@ -1,0 +1,25 @@
+<div id="content" class="form">
+  <h1>New school</h1>
+
+  <% form_for(@school) do |f| %>
+    <%= f.error_messages %>
+
+    <p>
+      <%= f.label :name %>
+      <%= f.text_field :name %>
+    </p>
+    <p>
+      <%= f.label :abbr, 'Abbreviation' %>
+      <%= f.text_field :abbr %>
+    </p>
+    <p>
+      <%= f.label :url, 'Official website' %>
+      <%= f.text_field :url %>
+    </p>
+    <p>
+      <%= f.submit 'Create' %>
+    </p>
+  <% end %>
+
+  <%= link_to 'Back', schools_path %>
+</div>

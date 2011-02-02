@@ -16,16 +16,30 @@
     </script>
   </head>
   <body>
-    <div id="bg">
-      <img src="/images/grad.png" alt="" />
-    </div>
     <div id="main">
+      <div id="bg_left"></div>
+      <div id="bg_right"></div>
       <div id="top">
         <div id ="header">
           <% if @current_user %>
             Welcome, <%= link_to "#{@current_user.first_name} #{@current_user.last_name}", @current_user %>! Want to <%= link_to "sign out", logout_path %>?
           <% else %>
             Welcome! Want to <%= link_to "register", new_user_path %>?
+            <div style="float: right; position: relative; bottom: 2px">
+              <div id="fb-root"></div>
+              <script src="http://connect.facebook.net/en_US/all.js"></script>
+              <script>
+                FB.init({appId: '140756749311348', status: true, cookie: true, xfbml: true});
+                FB.Event.subscribe('auth.sessionChange', function(response) {
+                  if (response.session) {
+                    // A user has logged in, and a new cookie has been saved
+                  } else {
+                    // The user has logged out, and the cookie has been cleared
+                  }
+                });
+              </script>
+              <fb:login-button></fb:login-button>
+            </div>
           <% end %>
         </div>
         <div id="maincol">

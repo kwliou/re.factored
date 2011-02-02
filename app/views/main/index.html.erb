@@ -3,20 +3,27 @@
   <div id="content_left">
     <div id="courses">
       <span class="section_header">Subscribed Courses</span>
-
-        <% @current_user.courses.each do |course| %>
-          <% link_to course, :class => "name", :id => "#{course.department} #{course.number}" do %>
-            <span class="course"><%=h course.dept %> <%=h course.number %></span>
-            <span class="stryde course_info"><%=h course.name %></span>
-          <% end %>
-          <!--<%= link_to 'Edit', edit_course_path(course) %>-->
-                      <%= link_to 'Remove from list', course_unsubscribe_path(course) %>
-          <br />
+        <% if @current_user.schools.empty? %>
+          <%= link_to 'Time to enroll in a school!', schools_path %>
+        <% else %>
+          <% @school_courses.each_pair do |school, courses| %>
+            <% unless @single_school %>
+              <span style="font-size:13pt; font-weight: bold"><%=h school.name %></span><br />
+            <% end %>
+            <% if courses.empty? %>
+              <p><%= link_to 'Add a class', new_course_path(school) %> from <%= link_to school.name, school %></p>
+            <% else %>
+              <% courses.each do |course| %>
+                <% link_to course_path(course.params), :class => 'name' do %>
+                  <span class="course"><%=h course.dept %> <%=h course.number %></span>
+                  <span class="course_info"><%=h course.name %></span>
+                <% end %>
+              <% end %>
+            <% end %>
+          <!--%= link_to 'Remove', course_unsubscribe_path(course, :school_id => course.school_id, :term => course.term, :year => course.year) %-->
         <% end %>
-
-      <br />
-      <%= link_to 'View All Courses', url_for(:controller => 'courses', :action => 'index') %>
-      <!--<%= link_to "New course", new_course_path %>-->
+        <!--%= link_to 'View All Courses', user_courses_path(@current_user) %-->
+      <% end %>
     </div>
     <br />
     <div id="otherstuff">
@@ -34,7 +41,7 @@
   </div>
   <% else %>
     <div id="welcome">
-      <p class="stryde" id="welcome_title">What are we about?</p>
+      <p id="welcome_title">What are we about?</p>
       <p>
         <strong>re.factored</strong> is a project by students for students. We know
         first-hand about <abbr title="Course Management System">CMS</abbr>s that are

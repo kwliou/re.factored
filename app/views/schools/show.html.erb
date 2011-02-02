@@ -1,0 +1,12 @@
+<div id="content">
+  <h1 style="display: inline"><%=h @school.name %></h1>
+  <%= link_to @pretty_url, @school.url, :target => "_blank" %>
+  <p>
+    Departments
+    <ul>
+      <% @school.departments.each do |department| %>
+        <li><%= @current_user.schools.include?(@school) ? (link_to department.name, [@school, department]) : department.name %></li>
+      <% end %>
+    </ul>
+  </p>
+</div>

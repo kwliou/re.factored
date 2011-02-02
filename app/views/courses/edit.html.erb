@@ -10,21 +10,21 @@
 
 <%= render '/layouts/nav', :navigation =>
   [["Courses", courses_path],
-  ["#{@course.dept} #{@course.number}", @course]] %>
+  ["#{@course.dept} #{@course.number}", course_path(@course.params)]] %>
 
-<div id="content">
+<div id="content" class="form">
   <h1>Editing course</h1>
-
-  <% form_for(@course) do |f| %>
+ <!--form action="/ucb/COMPSCI_184/fa10" class="edit_course" id="edit_course_1" method="post"-->
+  <% form_for @course, :url => course_path(@course.params) do |f| %>
     <%= f.error_messages %>
     <p>
-      <%= f.label :name, 'Name', :class => 'form_label' %>
-      <%= f.text_field :name, :style => 'width: 15em' %>
+      <%= f.label :name, 'Name' %>
+      <%= f.text_field :name %>
     </p>
     <p>
-      <%= f.label :department_id, 'Department', :class => 'form_label' %>
+      <%= f.label :department_id, 'Department' %>
       <%= f.select :department_id, @departments, {}, :style => 'min-width: 15.4em' %>
-      <%= link_to 'Add a department', new_department_path, :style => 'margin-left: 10px; text-transform: lowercase; font-variant: small-caps' %>
+      <%= link_to 'Add a department', new_school_department_path(@school), :style => 'margin-left: 10px; text-transform: lowercase; font-variant: small-caps' %>
     </p>
     <p>
       <%= f.label :number, 'Number', :class => 'form_label' %>
@@ -32,25 +32,25 @@
     </p>
     <p>
       <%= f.label :term, 'Term', :class => 'form_label' %>
-      <%= f.select :term, ['Fall', 'Winter', 'Spring', 'Summer'] %>
+      <%= f.select :term, [['Fall', 'fa'], ['Winter', 'wi'], ['Spring', 'sp'], ['Summer', 'su']] %>
       <%= f.select :year, @years %>
     </p>
     <p id="day_options">
-      <%= f.label :days, 'Days', :class => 'form_label' %>
+      <%= f.label :days, 'Days' %>
       <%= check_box_tag 'm', 'M', @days[0] %>
-      <%= label_tag 'M', 'Monday' %>
+      <%= label_tag 'M', 'Monday', :class => 'day_label' %>
       <%= check_box_tag 't', 'T', @days[1] %>
-      <%= label_tag 'Tu', 'Tuesday' %>
+      <%= label_tag 'Tu', 'Tuesday', :class => 'day_label' %>
       <%= check_box_tag 'w', 'W', @days[2] %>
-      <%= label_tag 'W', 'Wednesday' %>
+      <%= label_tag 'W', 'Wednesday', :class => 'day_label' %>
       <%= check_box_tag 'r', 'R', @days[3] %>
-      <%= label_tag 'Th', 'Thursday' %>
+      <%= label_tag 'Th', 'Thursday', :class => 'day_label' %>
       <%= check_box_tag 'f', 'F', @days[4] %>
-      <%= label_tag 'F', 'Friday' %>
+      <%= label_tag 'F', 'Friday', :class => 'day_label' %>
       <%= check_box_tag 's', 'S', @days[5] %>
-      <%= label_tag 'Sa', 'Saturday' %>
+      <%= label_tag 'Sa', 'Saturday', :class => 'day_label' %>
       <%= check_box_tag 'u', 'U', @days[6] %>
-      <%= label_tag 'Su', 'Sunday' %>
+      <%= label_tag 'Su', 'Sunday', :class => 'day_label' %>
     </p>
     <p>
       <%= f.label :description, {}, :class => 'form_label', :style => 'vertical-align: top' %>
@@ -61,6 +61,6 @@
     </p>
   <% end %>
 
-  <%= link_to 'Show', @course %> |
+  <%= link_to 'Show', course_path(@course.params) %> |
   <%= link_to 'Back', courses_path %>
 </div>

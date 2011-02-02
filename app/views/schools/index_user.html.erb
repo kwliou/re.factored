@@ -1,0 +1,69 @@
+<% content_for :title, @profile ? 'My Schools' : 'Users' %>
+
+<%= render '/layouts/nav', :no_semester => true, :navigation =>
+  @profile ? [['My Profile', @user]] : [['Users', users_path]] %>
+
+<style type="text/css">
+  .action_button {
+    /*background-color: #006295;
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+    padding: 0 4px 3px 3px;
+    font-weight: bold;
+    font-size: 12pt;
+    text-transform: lowercase;
+    position: relative;
+    bottom: 1px;*/
+  }
+  .action_button a {
+    color: #111;
+    font-weight: bold;
+    font-size: 11px;
+    background: #f0f0f0;
+    /*padding: 3px 5px 4px 5px;*/
+    padding: 3px 4px 3px 4px;
+    text-decoration: none;
+    position: relative;
+    bottom: 1px;
+    border: 1px solid #ccc;
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+    border-radius: 4px;
+  }
+  .action_button a:hover {
+    /*text-decoration: underline;*/
+    color: #fff;
+    background: #006295; /*#26ADE4;*/
+    background: -webkit-gradient(linear, left top, left bottom, from(#0084C6), to(#006295));
+    background: -moz-linear-gradient(top, #0084C6, #006295);
+    border: 1px solid #006295;
+  }
+  a:focus .action_button_txt {
+    text-decoration: underline;
+  }
+  .action_button img {
+    vertical-align: middle;
+    position: relative;
+    bottom: 2px;
+    border: none;
+  }
+</style>
+<div id="content">
+  <h1>Listing <%=h @profile ? "your" : "{@user.name}'s" %> enrolled schools</h1>
+  <p>
+    <% @schools.each do |school| %>
+      <%= link_to school.name, school, :style => "margin-right: 5px;" %>
+    <span class="action_button">
+      <% link_to school_unenroll_path(school) do %>
+      <!--img src="/images/remove.png" alt="" style="vertical-align: middle; position: relative; bottom: 1px; border: none" /-->
+      <span class="action_button_txt">Remove</span>
+      <% end %>
+      </span>
+      <!--%= link_to 'Edit', edit_school_path(school) %-->
+      <!--%= link_to 'Destroy', school, :confirm => 'Are you sure?', :method => :delete %-->
+    <% end %>
+  </p>
+  <% if @profile %>
+    Would you like to <%= link_to "enroll in a school", schools_path %>?
+  <% end %>
+</div>

@@ -3,35 +3,53 @@
 
 <%= render '/layouts/nav', :navigation =>
   [["Courses", courses_path],
-  ["#{@course.dept} #{@course.number}", @course]] %>
+  ["#{@course.dept} #{@course.number}", @course.params]] %>
 <div id="add_item">
-  <%= link_to 'New Item', new_course_item_path(@course) %>
+  <%= link_to 'New Item', new_course_item_path(@course.nest_params) %>
 </div>
 <div id="content">
   <div id="content_left">
     <div>
-      <%= link_to "Assignments, Projects", course_items_path(@course, :category => "assignment project"), :class => "course_action" %>
-      <span class="stryde course_action_comment">Time to work!</span>
+      <span class="course_action">
+        <%= link_to "Assignments, Projects", course_items_path(@course.nest_params.merge :category => "assignment project") %>
+      </span>
+      <span class="course_action_comment">Time to work!</span>
     </div>
     <div>
-      <%= link_to "Exams, Quizzes, etc.", course_items_path(@course, :category => "exam quiz"), :class => "course_action" %>
-      <span class="stryde course_action_comment">Study buddy?</span>
+      <span class="course_action">
+        <%= link_to "Exams, Quizzes", course_items_path(@course.nest_params.merge :category => "exam quiz") %>
+      </span>
+      <span class="course_action_comment">Study buddy?</span>
     </div>
     <div>
-      <%= link_to "All Course Items", course_items_path(@course), :class => "course_action" %>
-      <span class="stryde course_action_comment">All that other stuff.</span>
+      <span class="course_action">
+        <%= link_to "All Course Items", course_items_path(@course.nest_params) %>
+      </span>
+      <span class="course_action_comment">All that other stuff.</span>
     </div>
     <div>
-      <a class="course_action" href="<%= url_for(course_grades_path(@course)) %>">Grades</a>
-      <span class="stryde course_action_comment">Cross your fingers!</span>
+      <span class="course_action">
+        <%= link_to "Grades", course_grades_path(@course.nest_params) %>
+      </span>
+      <span class="course_action_comment">Cross your fingers!</span>
     </div>
     <div>
-      <%= link_to "Course Info", edit_course_path(@course), :class => "course_action" %>
-      <span class="stryde course_action_comment">What's this all about?</span>
+      <span class="course_action">
+        <%= link_to "Ratings", course_ratings_path(@course.nest_params) %>
+      </span>
+      <span class="course_action_comment">What did you think?</span>
     </div>
     <div>
-      <%= link_to "Ratings", course_ratings_path(@course), :class => "course_action" %>
-      <span class="stryde course_action_comment">What did you think?</span>
+      <span class="course_action">
+        <%= link_to "Course Information", edit_course_path(@course.params) %>
+      </span>
+      <span class="course_action_comment">What's this all about?</span>
+    </div>
+    <div>
+      <span class="course_action">
+        <%= link_to "Edit Course", edit_course_path(@course.params) %>
+      </span>
+      <span class="course_action_comment">Make it better.</span>
     </div>
   </div>
 </div>
