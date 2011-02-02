@@ -14,7 +14,8 @@ config.action_view.debug_rjs                         = true
 config.action_controller.perform_caching             = false
 
 # Disable delivery errors, bad email addresses will be ignored
-# config.action_mailer.raise_delivery_errors = false
+config.action_mailer.raise_delivery_errors = false
+
 config.action_mailer.smtp_settings = {
   :address        => "smtp.sendgrid.net",
   :port           => 25,
@@ -24,4 +25,4 @@ config.action_mailer.smtp_settings = {
   :domain         => "sendgrid.net"
 }
 
-config.action_mailer.perform_deliveries = true
+config.action_mailer.perform_deliveries = false
