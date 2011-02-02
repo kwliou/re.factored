@@ -1,7 +1,7 @@
 class CreateCourses < ActiveRecord::Migration
   def self.up
     create_table :courses do |t|
-      t.string :department
+      t.integer :department_id
       t.string :number
       t.string :days
       t.string :term
@@ -9,6 +9,7 @@ class CreateCourses < ActiveRecord::Migration
       t.text :description
       t.string :name
       t.decimal :points
+
       t.timestamps
     end
   end

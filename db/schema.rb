@@ -9,19 +9,19 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20101213203451) do
+ActiveRecord::Schema.define(:version => 20101228131521) do
 
   create_table "courses", :force => true do |t|
+    t.integer  "department_id"
     t.string   "number"
     t.string   "days"
     t.string   "term"
     t.integer  "year"
     t.text     "description"
     t.string   "name"
+    t.decimal  "points"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.decimal  "points_possible"
-    t.integer  "department_id"
   end
 
   create_table "courses_users", :id => false, :force => true do |t|
@@ -30,53 +30,68 @@ ActiveRecord::Schema.define(:version => 20101213203451) do
   end
 
   create_table "departments", :force => true do |t|
+    t.integer  "school_id"
     t.string   "name"
     t.string   "abbr"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
+  create_table "enrollments", :force => true do |t|
+    t.integer  "school_id"
+    t.integer  "user_id"
+    t.integer  "start_year"
+    t.integer  "end_year"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "grades", :force => true do |t|
+    t.integer  "user_id"
+    t.integer  "item_id"
     t.string   "letter"
     t.decimal  "points_received"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "user_id"
-    t.integer  "item_id"
   end
 
   create_table "iratings", :force => true do |t|
+    t.integer  "user_id"
+    t.integer  "item_id"
     t.integer  "easiness"
     t.integer  "interest"
     t.integer  "work_load"
-    t.integer  "item_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "user_id"
   end
 
   create_table "items", :force => true do |t|
+    t.integer  "course_id"
+    t.string   "name"
     t.string   "category"
     t.datetime "due_date"
     t.integer  "points"
     t.float    "weight"
+    t.text     "description"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.text     "description", :limit => 255
-    t.integer  "course_id"
-    t.string   "name"
   end
 
   create_table "posts", :force => true do |t|
-    t.string   "title"
-    t.text     "body"
-    t.datetime "commented_at"
-    t.string   "tags"
-    t.datetime "created_at"
-    t.datetime "updated_at"
     t.integer  "user_id"
     t.integer  "item_id"
     t.integer  "parent_id"
+    t.string   "title"
+    t.text     "body"
+    t.string   "tags"
+    t.datetime "commented_at"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "posts_tags", :id => false, :force => true do |t|
+    t.integer "post_id", :null => false
+    t.integer "tag_id",  :null => false
   end
 
   create_table "ratings", :force => true do |t|
@@ -89,9 +104,25 @@ ActiveRecord::Schema.define(:version => 20101213203451) do
     t.datetime "updated_at"
   end
 
+  create_table "schools", :force => true do |t|
+    t.string   "name"
+    t.string   "abbr"
+    t.string   "url"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "enrollment_id"
+  end
+
+  create_table "tags", :force => true do |t|
+    t.string   "value"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "users", :force => true do |t|
     t.string   "first_name"
     t.string   "last_name"
+    t.string   "privilege"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "username"
@@ -100,6 +131,7 @@ ActiveRecord::Schema.define(:version => 20101213203451) do
     t.string   "password_salt"
     t.string   "persistence_token"
     t.integer  "fb_id"
+    t.integer  "enrollment_id"
   end
 
 end
