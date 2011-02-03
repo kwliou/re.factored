@@ -142,11 +142,13 @@ textarea {
     background: url("/images/logo.png") #d1e751 no-repeat left center;
     height: 96px;
 }
-#college_logo {
+#college_logo, #empty_college_logo {
     float: right;
-    background: url("/images/school_logo.png") bottom no-repeat;
     width: 220px;
     height: 84px;
+}
+#college_logo {
+    background: url("/images/school_logo.png") bottom no-repeat;
 }
 #banner_right {
     height: 42px;
@@ -357,7 +359,7 @@ we don't have to rely on proprietary attributes but there's no time
     display: inline-block;
     background: #26ade4 url("/images/add.png") no-repeat left center;
     position: relative;
-    left: 27.5%;
+    left: 19.8%;
     bottom: 10px;
     padding: 4px 10px 5px 26px;
     margin-bottom: -20px;

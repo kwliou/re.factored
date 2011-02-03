@@ -17,14 +17,15 @@ ActionController::Routing::Routes.draw do |map|
     user.posts 'posts', :controller => :posts, :action => :index_user, :requirements => { :id => /([^\/?]+)/ }
   end
 
-  map.edit_school ':id/edit', :controller => :schools, :action => :edit
   map.resources :schools, :except => [:show, :update, :edit] do |school| # path_prefix, as
     school.resources :departments, :path_prefix => ':school_id' #, :except => :destroy
     school.resources :courses, :only => :create
     school.enroll 'enroll', :path_prefix => ':id', :controller => :schools, :action => :enroll
     school.unenroll 'unenroll', :path_prefix => ':id', :controller => :schools, :action => :unenroll
   end
-  map.school ':id', :controller => :schools, :action => :show
+  map.school ':id', :controller => :schools, :action => :show, :conditions => { :method => :get }
+  map.connect ':id', :controller => :schools, :action => :update, :conditions => { :method => :put }
+  map.edit_school ':id/edit', :controller => :schools, :action => :edit
 
   map.course ':school_id/:id/:term:year', :controller => :courses, :action => :show, :conditions => { :method => :get }, :requirements => { :term => /../ }
   map.connect ':school_id/:id/:term:year', :controller => :courses, :action => :update, :conditions => { :method => :put }, :requirements => { :term => /../}

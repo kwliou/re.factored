@@ -1,3 +1,5 @@
+<% content_for :title, @school.name %>
+
 <div id="content">
   <h1 style="display: inline"><%=h @school.name %></h1>
   <%= link_to @pretty_url, @school.url, :target => "_blank" %>

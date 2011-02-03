@@ -2,7 +2,8 @@
 <% content_for :title, @course.abbr %>
 
 <%= render '/layouts/nav', :navigation =>
-  [["Courses", courses_path],
+  [[@course.school.name, school_path(@course.school)],
+  ["Courses", courses_path],
   ["#{@course.dept} #{@course.number}", @course.params]] %>
 <div id="add_item">
   <%= link_to 'New Item', new_course_item_path(@course.nest_params) %>
