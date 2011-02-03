@@ -10,7 +10,8 @@
 </noscript>
 
 <%= render '/layouts/nav', :navigation =>
-  [["Courses", courses_path]] %>
+  [[@school.name, @school],
+   ["Courses", courses_path]] %>
 
 <div id="content" class="form">
   <h1>Making a new course?</h1>

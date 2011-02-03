@@ -40,11 +40,11 @@ class SchoolsController < ApplicationController
   # GET /schools/new
   # GET /schools/new.xml
   def new
-    @school = School.new
+    @new_school = School.new
 
     respond_to do |format|
       format.html # new.html.erb
-      format.xml  { render :xml => @school }
+      format.xml  { render :xml => @new_school }
     end
   end
 

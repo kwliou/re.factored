@@ -27,7 +27,7 @@ ActionController::Routing::Routes.draw do |map|
   map.connect ':id', :controller => :schools, :action => :update, :conditions => { :method => :put }
   map.edit_school ':id/edit', :controller => :schools, :action => :edit
 
-  map.course ':school_id/:id/:term:year', :controller => :courses, :action => :show, :conditions => { :method => :get }, :requirements => { :term => /../ }
+  map.course ':school_id/:id/:term:year', :controller => :courses, :action => :show, :conditions => { :method => :get }, :requirements => { :term => /../, :year => /\d\d/ }
   map.connect ':school_id/:id/:term:year', :controller => :courses, :action => :update, :conditions => { :method => :put }, :requirements => { :term => /../}
   map.edit_course ':school_id/:id/:term:year/edit', :controller => :courses, :action => :edit, :requirements => { :term => /../ }
   map.resources :courses, :except => [:show], :path_prefix => ':school_id' do |course|#:collection => {:auto_complete_for_department_name => :get } do |course|
