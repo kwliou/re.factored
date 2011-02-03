@@ -1,6 +1,6 @@
 <h1>Editing department</h1>
 
-<% form_for(@department) do |f| %>
+<% form_for([@school, @department]) do |f| %>
   <%= f.error_messages %>
 
   <p>
@@ -16,5 +16,5 @@
   </p>
 <% end %>
 
-<%= link_to 'Show', @department %> |
-<%= link_to 'Back', departments_path %>
+<%= link_to 'Show', [@school, @department] %> |
+<%= link_to 'Back', school_departments_path %>

@@ -11,7 +11,7 @@
     <tr>
       <td><%=h department.name %></td>
       <td><%=h department.abbr %></td>
-      <td><%= link_to 'Show', school_department_path(@school, department) %></td>
+      <td><%= link_to 'Show', [@school, department] %></td>
       <td><%= link_to 'Edit', edit_school_department_path(@school, department) %></td>
       <!--td>%= link_to 'Destroy', destroy_department_path(@school, department), :confirm => 'Are you sure?', :method => :delete %></td-->
     </tr>
