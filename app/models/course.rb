@@ -17,7 +17,7 @@ class Course < ActiveRecord::Base
   }
 
   def pretty_term
-    return "#{self.term} #{self.year}"
+    return "#{@@terms[self.term]} #{self.year}"
   end
   
   def get_all_semesters
@@ -67,7 +67,7 @@ class Course < ActiveRecord::Base
   end
 
   def year_abbr
-    "#{year}"[2, 4]
+    year.to_s[2, 4]
   end
   
   def to_param

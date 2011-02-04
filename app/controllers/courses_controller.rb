@@ -51,6 +51,15 @@ class CoursesController < ApplicationController
     end
   end
 
+  def info
+    @course = Course.find_by_params(params)
+    
+    respond_to do |format|
+      format.html # show.html.erb
+      format.xml  { render :xml => @course }
+    end
+  end
+
   # GET /courses/new
   # GET /courses/new.xml
   def new
@@ -87,7 +96,7 @@ class CoursesController < ApplicationController
     respond_to do |format|
       if @course.save
         @current_user.courses << @course
-        format.html { redirect_to(@course, :notice => 'Course was successfully created.') }
+        format.html { redirect_to(@course.params, :notice => 'Course was successfully created.') }
         format.xml  { render :xml => @course, :status => :created, :location => @course }
       else
         format.html { render :action => "new" }
@@ -106,7 +115,7 @@ class CoursesController < ApplicationController
     @course = Course.find_by_params(params)
     respond_to do |format|
       if @course.update_attributes(params[:course])
-        format.html { redirect_to(course_url(@course.params), :notice => 'Course was successfully updated.') }
+        format.html { redirect_to(course_info_url(@course.params), :notice => 'Course was successfully updated.') }
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }

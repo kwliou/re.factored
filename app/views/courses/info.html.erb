@@ -1,0 +1,15 @@
+<% content_for :title, @course.abbr %>
+
+<%= render '/layouts/nav', :navigation =>
+  [[@course.school.name, @course.school],
+   ["#{@course.dept} #{@course.number}", course_path]] %>
+<div id="content">
+  <h1 style="display: inline"><%=h @course.name %></h1>
+  &nbsp;<%= link_to 'Edit', edit_course_path(@course.params) %>
+  <p>
+    <strong>Term</strong> <%=h @course.pretty_term %>
+    <strong>Days</strong> <%=h @course.days.each_char.map {|c| c == c.upcase ? c : ''} %>
+  </p>
+  <span class="section_header">Description</span>
+  <%=h @course.description %>
+</div>

@@ -14,7 +14,12 @@ class Item < ActiveRecord::Base
   def to_param
     name.gsub(' ', '_')
   end
-
+  def params
+    course.nest_params.merge(:id => id)
+  end
+  def nest_params
+    course.nest_params.merge(:item_id => id)
+  end
   def histogram
     # Median is easy
     grades = self.grades.sort { |a, b| a.points_received <=> b.points_received }

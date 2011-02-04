@@ -1,10 +1,8 @@
-<%= stylesheet_link_tag 'courses' %>
 <% content_for :title, @course.abbr %>
 
 <%= render '/layouts/nav', :navigation =>
-  [[@course.school.name, school_path(@course.school)],
-  ["Courses", courses_path],
-  ["#{@course.dept} #{@course.number}", @course.params]] %>
+  [[@course.school.name, @course.school],
+   ["#{@course.dept} #{@course.number}", course_path]] %>
 <div id="add_item">
   <%= link_to 'New Item', new_course_item_path(@course.nest_params) %>
 </div>
@@ -42,7 +40,7 @@
     </div>
     <div>
       <span class="course_action">
-        <%= link_to "Course Information", edit_course_path(@course.params) %>
+        <%= link_to "Course Information", course_info_path(@course.params) %>
       </span>
       <span class="course_action_comment">What's this all about?</span>
     </div>
@@ -62,7 +60,7 @@
       <% @items.each do |item| %>
       <li class="calendar_entry">
         <%=h item.cal_date %>
-        <%= link_to item.name, [@course, item] %>
+        <%= link_to item.name, course_item_path(item.params) %>
       </li>
       <% end %>
     </ul>

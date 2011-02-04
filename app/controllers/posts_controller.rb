@@ -25,7 +25,7 @@ class PostsController < ApplicationController
   # GET /posts
   # GET /posts.xml
   def index
-    @all_tags = (@item.posts.map {|i| i.tags_array}).flatten.uniq.sort
+    @all_tags = (@item.posts.map {|i| i.tags }).flatten.sort #@all_tags = (@item.posts.map {|i| i.tags_array}).flatten.uniq.sort
     #@sel_tags = @all_tags.select { |t| params["tag_#{t}"] }
     @sel_tags = params[:tags] || [params[:tag]]
     @include_all = params[:include_all]
@@ -36,7 +36,7 @@ class PostsController < ApplicationController
         (@sel_tags.map {|t| @item.posts.find(:all, :conditions => ['posts.tags LIKE ?', "%#{t}%"], :include => :replies) }).flatten.uniq
     elsif params[:tag]
       #@sel_tags = [params[:tag]]
-      @posts = @item.posts.find_all_by_tags(params[:tag])
+      @posts = @item.posts.find_all_by_tag(params[:tag])
     else
       #@sel_tags = []
       @posts = @item.posts.find_all_by_parent_id(nil)

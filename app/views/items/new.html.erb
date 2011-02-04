@@ -2,14 +2,14 @@
 
 <%= render '/layouts/nav', :navigation =>
   [["Courses", courses_path],
-  ["#{@course.dept} #{@course.number}", @course],
-  ["Items", course_items_path(@course)]] %>
+  ["#{@course.dept} #{@course.number}", @course.params],
+  ["Items", course_items_path(@course.nest_params)]] %>
 
 
 <div id="content">
   <div id="content_left">
 <h1>New item</h1>
-<% form_for([@course, @item]) do |f| %>
+<% form_for([@course, @item], :url => course_items_path(@course.nest_params)) do |f| %>
   <%= f.error_messages %>
 
   <p>
@@ -41,6 +41,6 @@
   </p>
 <% end %>
 
-<%= link_to 'Back', course_items_path(@course) %>
+<%= link_to 'Back', course_items_path(@course.params) %>
 </div>
 </div>
