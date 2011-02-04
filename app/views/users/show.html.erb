@@ -4,19 +4,14 @@
   @profile ? [['My Profile', @user]] : [['Users', users_path]] %>
 
 <div id="content">
-  <h1><%=h @user.first_name %> <%=h @user.last_name %>
-	  <% if @user.fb_id %>
-	  	  <a class="facebook_profile" href="<%= @user.fb_url %>">Facebook profile</a> <br/>
-	  <% end %>
-  </h1>
-
+  <h1 class="context"><%=h @user.first_name %> <%=h @user.last_name %></h1>
+  <%= link_to 'Edit my information', edit_user_path(@user) if @profile %>
+  <p><%= link_to 'Posts', user_posts_path(@user) %></p>
+  <p><%= link_to 'Schools', user_schools_path(@user) %></p>
   <strong>Subscribed Courses</strong>
   <p>
     <% @user.courses.each do |course| %>
-      <%= link_to course.abbr, course %> (<%=h course.name %>)<br />
+      <%= link_to course.abbr, course.params %> (<%=h course.name %>)<br />
     <% end %>
   </p>
-  <p><%= link_to 'Posts', user_posts_path(@user) %></p>
-  <p><%= link_to 'Schools', user_schools_path(@user) %></p>
-  <p><%= link_to 'Edit my information', edit_user_path(@user) if @profile %></p>
 </div>

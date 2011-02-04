@@ -8,40 +8,42 @@ ActionController::Routing::Routes.draw do |map|
   map.login 'login',       :controller => :user_sessions, :action => :new
   map.logout 'logout',     :controller => :user_sessions, :action => :destroy
 
-  map.resources :user_sessions
-  map.resources :enrollments
+  map.resources :user_sessions, :enrollments
  
   map.resources :users, :requirements => {:id => /[^\?\/]+/} do |user|
     user.resources :ratings, :iratings
-    user.schools 'schools', :controller => :schools, :action => :index_user, :requirements => { :id => /([^\/?]+)/ }
-    user.posts 'posts', :controller => :posts, :action => :index_user, :requirements => { :id => /([^\/?]+)/ }
+    user.schools 'schools', :controller => :schools, :action => :index_user, :requirements => { :user_id => /([^\/?]+)/ }
+    user.posts     'posts', :controller => :posts,   :action => :index_user, :requirements => { :user_id => /([^\/?]+)/ }
   end
 
   map.resources :schools, :except => [:show, :update, :edit] do |school| # path_prefix, as
     school.resources :departments, :path_prefix => ':school_id' #, :except => :destroy
     school.resources :courses, :only => :create
-    school.enroll 'enroll', :path_prefix => ':id', :controller => :schools, :action => :enroll
+    school.enroll   'enroll',   :path_prefix => ':id', :controller => :schools, :action => :enroll
     school.unenroll 'unenroll', :path_prefix => ':id', :controller => :schools, :action => :unenroll
   end
-  map.school ':id', :controller => :schools, :action => :show, :conditions => { :method => :get }
-  map.connect ':id', :controller => :schools, :action => :update, :conditions => { :method => :put }
+  
+  map.school      ':id',      :controller => :schools, :action => :show, :conditions => { :method => :get }
+  map.connect     ':id',      :controller => :schools, :action => :update, :conditions => { :method => :put }
   map.edit_school ':id/edit', :controller => :schools, :action => :edit
 
-  map.course ':school_id/:id/:term:year', :controller => :courses, :action => :show, :conditions => { :method => :get }, :requirements => { :term => /../, :year => /\d\d/ }
-  map.connect ':school_id/:id/:term:year', :controller => :courses, :action => :update, :conditions => { :method => :put }, :requirements => { :term => /../}
-  map.edit_course ':school_id/:id/:term:year/edit', :controller => :courses, :action => :edit, :requirements => { :term => /../ }
+  map.course      ':school_id/:id/:term:year',      :controller => :courses, :action => :show,   :conditions => { :method => :get }, :requirements => { :term => /../, :year => /\d\d/ }
+  map.connect     ':school_id/:id/:term:year',      :controller => :courses, :action => :update, :conditions => { :method => :put }, :requirements => { :term => /../}
+  map.edit_course ':school_id/:id/:term:year/edit', :controller => :courses, :action => :edit,   :requirements => { :term => /../ }
+
   map.resources :courses, :except => [:show], :path_prefix => ':school_id' do |course|#:collection => {:auto_complete_for_department_name => :get } do |course|
-    course.subscribe 'subscribe', :controller => :courses, :action => :subscribe,  :path_prefix => ':school_id/:id/:term:year'
-    course.unsubscribe 'unsubscribe', :controller => :courses, :action => :unsubscribe, :path_prefix => ':school_id/:id/:term:year'
-    course.resources :grades, :path_prefix => ':school_id/:course_id/:term:year', :requirements => { :term => /../}
-    course.resources :ratings, :path_prefix => ':school_id/:course_id/:term:year'
+    course.info        'info',        :controller => :courses, :action => :info,        :path_prefix => ':school_id/:id/:term:year', :requirements => {:term => /../, :year => /\d\d/}
+    course.subscribe   'subscribe',   :controller => :courses, :action => :subscribe,   :path_prefix => ':school_id/:id/:term:year', :requirements => {:term => /../, :year => /\d\d/}
+    course.unsubscribe 'unsubscribe', :controller => :courses, :action => :unsubscribe, :path_prefix => ':school_id/:id/:term:year', :requirements => {:term => /../, :year => /\d\d/}
+    course.resources :grades,  :path_prefix => ':school_id/:course_id/:term:year', :requirements => {:term => /../, :year => /\d\d/}
+    course.resources :ratings, :path_prefix => ':school_id/:course_id/:term:year', :requirements => {:term => /../, :year => /\d\d/}
     # :requirements is for items with periods in them ex. Chapter 2.1 Questions
-    course.resources :items, :path_prefix => ':school_id/:course_id/:term:year', :requirements => {:id => /[^\?\/]+/} do |item|
+    course.resources :items,   :path_prefix => ':school_id/:course_id/:term:year', :requirements => {:id => /[^\?\/]+/, :term => /../, :year => /\d\d/} do |item|
       item.ajaxupdate 'posts/update_results', :controller => :posts, :action => :update_results, :method => :get, :requirements => {:item_id => /[^\?\/]+/}
-      item.resources :posts, :requirements => {:item_id => /[^\?\/]+/} do |post|
+      item.resources :iratings, :requirements => {:item_id => /[^\?\/]+/}
+      item.resources :posts,    :requirements => {:item_id => /[^\?\/]+/, :term => /../, :year => /\d\d/} do |post|
         post.reply 'reply', :controller => :posts, :action => :new_post_reply, :requirements => {:item_id => /[^\?\/]+/}
       end
-      item.resources :iratings, :requirements => {:item_id => /[^\?\/]+/}
     end
   end
   

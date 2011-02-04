@@ -63,7 +63,7 @@
     <% @items.each do |item| %>
     <li class="calendar_entry">
       <%=h item.cal_date %>
-      <%= link_to item.name, [item.course, item] %>
+      <%= link_to item.name, course_item_path(item.params) %>
     </li>
     <% end %>
   </ul>

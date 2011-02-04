@@ -22,6 +22,7 @@ class PostsController < ApplicationController
     #@query = params[:tags]#(@item.posts.map { |i| i.tags }).uniq
     render 'filter' #, :posts => @posts
   end
+  
   # GET /posts
   # GET /posts.xml
   def index
