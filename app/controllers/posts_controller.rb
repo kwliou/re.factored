@@ -7,25 +7,14 @@ class PostsController < ApplicationController
   layout 'scaffold', :except => [:update_results]
 
   def update_results
-    #all_tags = (@item.posts.map {|i| i.tags }).uniq
     sel_tags = params[:tags]
     @include_all = params[:include_all]
     if sel_tags.nil?
       @posts = @item.posts.find_all_by_parent_id(nil)
-    elsif @include_all
-          tags = Tag.find_all_by_value(sel_tags)
-
-      @posts = @item.posts.select {|p| (tags - p.tags).empty? }
-      #@posts = @item.posts.find(:all, :conditions => ['posts.tags LIKE ?', "%#{sel_tags.join(', ')}%"], :include => :replies)
     else
-          tags = Tag.find_all_by_value(sel_tags)
-
-      #@posts = @item.posts.find(:all, :conditions => ['posts.tags IN (?)', sel_tags], :include => :replies)
-      #@posts = (sel_tags.map {|t| @item.posts.find(:all, :conditions => ['posts.tags LIKE ?', "%#{t}%"], :include => :replies) }).flatten.uniq
-      @posts = @item.posts.reject {|p| (p.tags & tags).empty? }
-
+      tags = Tag.find_all_by_value(sel_tags)
+      @posts = @include_all ?  @item.posts.select {|p| (tags - p.tags).empty? }  : @posts = @item.posts.reject {|p| (p.tags & tags).empty? }
     end
-    #@query = params[:tags]#(@item.posts.map { |i| i.tags }).uniq
     render 'filter'
   end
   
@@ -37,24 +26,11 @@ class PostsController < ApplicationController
     @include_all = params[:include_all]
     if params[:tags]
       tags = Tag.find_by_value(@sel_tags)
-      if @include_all
-        @posts = @item.posts.select {|p| (tags - p.tags).empty? }
-      else
-        #tag_ids = tags.map {|t| t.id}
-        #post_ids = @item.posts.map {|p| p.id}
-        #query = PostsTag.find(:all, :conditions => ['post_id IN (?) AND tag_id IN (?)', post_ids, tag_ids])
-        #@posts = ((query.map {|q| q.post_id}).uniq.sort).map {|id| Post.find(id)}
-        @posts = @item.posts.reject {|p| (p.tags & tags).empty? }
-      end
-        #@item.posts.find(:all, :conditions => ['posts.tags LIKE ?', "%#{@sel_tags.join(', ')}%"], :include => :replies) :        
-        #(@sel_tags.map {|t| @item.posts.find(:all, :conditions => ['posts.tags LIKE ?', "%#{t}%"], :include => :replies) }).flatten.uniq
-      
+      @posts = @include_all ? @item.posts.select {|p| (tags - p.tags).empty? } : @item.posts.reject {|p| (p.tags & tags).empty? }
     elsif params[:tag]
-      #@sel_tags = [params[:tag]]
       tag = Tag.find_by_value(params[:tag])
       @posts = @item.posts.select {|p| p.tags.include?(tag)}
     else
-      #@sel_tags = []
       @posts = @item.posts.find_all_by_parent_id(nil)
     end
     respond_to do |format|
@@ -63,17 +39,6 @@ class PostsController < ApplicationController
     end
   end
 
-  # GET /user/:user_id/posts
-  def index_user
-    @user = User.find_by_username(params[:user_id])
-    @posts = @user.posts
-    @profile = @current_user == @user
-    respond_to do |format|
-      format.html # index_user.html.erb
-      format.xml  { render :xml => @posts }
-    end
-  end
-  
   # GET /posts/1
   # GET /posts/1.xml
   def show
@@ -173,7 +138,7 @@ private
     @school = School.find_by_param(params[:school_id])
   end
   def get_course
-    @course = Course.find_by_params(params) if params[:course_id]
+    @course = Course.find_by_params(params)
   end
   def get_item
     @item = Item.find_by_params(params)

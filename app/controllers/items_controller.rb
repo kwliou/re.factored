@@ -65,7 +65,7 @@ class ItemsController < ApplicationController
     respond_to do |format|
       if @item.save
         @item.update_attributes(:due_date => @item.due_date - DateTime.now.utc_offset) # Rails doesn't do this automatically!
-        format.html { redirect_to([@course, @item], :notice => 'Item was successfully created.') }
+        format.html { redirect_to(course_item_url(@item.params), :notice => 'Item was successfully created.') }
         format.xml  { render :xml => @item, :status => :created, :location => @item }
       else
         format.html { render :action => "new" }

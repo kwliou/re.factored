@@ -11,7 +11,7 @@
   <strong>Subscribed Courses</strong>
   <p>
     <% @user.courses.each do |course| %>
-      <%= link_to course.abbr, course.params %> (<%=h course.name %>)<br />
+      <%= link_to course.abbr, course_path(course.params) %> (<%=h course.name %>)<br />
     <% end %>
   </p>
 </div>

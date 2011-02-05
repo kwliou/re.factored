@@ -38,6 +38,17 @@ class UsersController < ApplicationController
   end
   
   def courses
+    @courses = @user.courses
+    @profile = @current_user == @user
+
+    respond_to do |format|
+      format.html # show.html.erb
+      format.xml  { render :xml => @user }
+    end
+  end
+
+  def posts
+    @posts = @user.posts
     @profile = @current_user == @user
 
     respond_to do |format|
@@ -68,14 +79,6 @@ class UsersController < ApplicationController
     @user = User.new(params[:user])
     respond_to do |format|
       if @user.save
-#        ActionMailer::Base.smtp_settings = {
-#          :address        => "smtp.sendgrid.net",
-#          :port           => "25",
-#          :authentication => :plain,
-#          :user_name      => ENV['SENDGRID_USERNAME'],
-#          :password       => ENV['SENDGRID_PASSWORD'],
-#          :domain         => ENV['SENDGRID_DOMAIN']
-#        }
         UserMailer.deliver_welcome(@user)
         format.html { redirect_to root_url }
         format.xml  { render :xml => @user, :status => :created, :location => @user }
