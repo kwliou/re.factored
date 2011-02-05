@@ -15,8 +15,10 @@
             <% else %>
               <% courses.each do |course| %>
                 <% link_to course_path(course.params), :class => 'name' do %>
-                  <span class="course"><%=h course.dept %> <%=h course.number %></span>
-                  <span class="course_info"><%=h course.name %></span>
+                  <div>
+                    <span class="course"><%=h course.dept %> <%=h course.number %></span>
+                    <span class="course_info"><%=h course.name %></span>
+                  </div>
                 <% end %>
               <% end %>
             <% end %>
