@@ -6,8 +6,6 @@ class CreatePosts < ActiveRecord::Migration
       t.integer :parent_id
       t.string :title
       t.text :body
-      t.string :tags
-      t.datetime :commented_at
 
       t.timestamps
     end

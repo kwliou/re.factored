@@ -96,7 +96,7 @@ class CoursesController < ApplicationController
     respond_to do |format|
       if @course.save
         @current_user.courses << @course
-        format.html { redirect_to(@course.params, :notice => 'Course was successfully created.') }
+        format.html { redirect_to(course_url(@course.params), :notice => 'Course was successfully created.') }
         format.xml  { render :xml => @course, :status => :created, :location => @course }
       else
         format.html { render :action => "new" }

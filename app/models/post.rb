@@ -5,17 +5,20 @@ class Post < ActiveRecord::Base
   has_many :replies, :class_name => 'Post', :foreign_key => 'parent_id'
   belongs_to :parent, :class_name => 'Post'
 
-  validates_presence_of :title, :body, :tags
-  
-  before_save do |post|
-    post.tags = (post.tags.split(',').map {|t| t.downcase.strip}).sort.join(', ')
+  validates_presence_of :title, :body
+
+  def Post.html_attributes
+    'abbr alt cite class datetime height href name src title width rowspan colspan rel'
   end
 
   def course
     item.course
   end
-  def tags_array
-    tags.split(', ')
+  def params
+    item.nest_params.merge(:id => to_param)
+  end
+  def nest_params
+    item.nest_params.merge(:post_id => to_param)
   end
   def replies_s
     replies.count.to_s + (replies.count == 1 ? " Reply" : " Replies")
@@ -28,26 +31,20 @@ class Post < ActiveRecord::Base
     time = created_at.getlocal.strftime("%I:%M %p")
     time.first == '0' ? time[1..-1] : time
   end
-  def time_ago
-    time = -(updated_at.getlocal - DateTime.current)
-    day_sec = 24*60*60
-    hour_sec = 60*60
-    min_sec = 60
-    if time > day_sec
-      str = "#{(time/day_sec).to_i} days"
-      #time %= day_sec
-    elsif time > hour_sec
-      str = "#{(time/hour_sec).to_i} hrs"
-      #time %= hour_sec
-    elsif time > min_sec
-      str = "#{(time/min_sec).to_i} min"
-      #time %= min_sec
-    else
-      str = "#{(time.to_i).to_i} sec"
+
+  def sanitize # for views
+    ActionController::Base.helpers.sanitize(body.gsub("\n", "<br />"), :attributes => Post.html_attributes)
+  end
+
+  def tags_s
+    (tags.map {|t| t.value }).sort.join(', ')
+  end
+
+  def add_tags(post_tags)
+    post_tags = post_tags.downcase.split(', ')
+    post_tags.each do |tag|
+      tags << Tag.find_or_initialize_by_value(tag) if tags.find_by_value(tag).nil?
     end
-    str += " ago"
   end
-  def sanitize # for views only
-    ActionController::Base.helpers.sanitize(body.gsub("\n", "<br />"), :attributes => 'abbr alt cite class datetime height href name src title width rowspan colspan rel')
-  end
+
 end

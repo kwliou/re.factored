@@ -1,36 +1,40 @@
-<% content_for :title, "#{@course.abbr} | #{@item.name} | Forum | Post Edit" %>
+<% content_for :title, "#{@course.abbr} | #{@item.name} |  Edit Forum Post" %>
 
 <%= render '/layouts/nav', :navigation => 
   [["Courses", courses_path],
-  ["#{@course.dept} #{@course.number}", @course],
-  [@item.category_s, course_items_path(@course, :category => @item.category.downcase)],
-  [@item.name, [@course, @item]],
-  ["Discussion", course_item_posts_path(@course, @item)]] %>
+   [@course.abbr, course_path(@course.params)],
+   [@item.category_s, course_items_path(@course.nest_params.merge :category => @item.category.downcase)],
+   [@item.name, course_item_path(@item.params)],
+   ["Discussion", course_item_posts_path(@item.nest_params)]] %>
 
-<div id="content" class="post_page">
-<% form_for([@course, @item, @post]) do |f| %>
+<div id="content" class="post_page form">
+<% form_for(@post, :url => course_item_post_path) do |f| %>
   <%= f.error_messages %>
 
-  <p id="post_page_title">
-    Editing: <%=h @post.title %>
-  </p>
-  <p id="post_page_body">
-    <%= @post.sanitize.gsub("\n", "<br />") %>
+  <p>
+    <%= f.label :title, 'Title' %>
+    <%=h @post.title %>
   </p>
   <p>
-    <%= text_area_tag 'append', nil, :rows => 10, :cols => 50 %>
-    
+    <%= f.label :body, 'Body', :style => 'vertical-align: top' %>
+    <span id="post_page_body">
+      <%= @post.sanitize.gsub("\n", "<br />") %>
+    </span>
   </p>
   <p>
-    <%= f.label :tags %><br />
-    <%= f.text_field :tags %>
+    <%= label_tag 'append', 'Additional Edit', :style => 'vertical-align: top' %>
+    <%= text_area_tag 'append', nil, :rows => 10, :cols => 50 %>    
+  </p>
+  <p>
+    <%= label_tag 'tags', 'Tags' %>
+    <%= text_field_tag 'tags', @tags %>
   </p>
   <p>
     <%= f.submit 'Update' %>
   </p>
 <% end %>
 
-<%= link_to 'Show', [@course, @item, @post] %> |
-<%= link_to 'Back', course_item_posts_path(@course, @item) %>
+<%= link_to 'Show', course_item_post_path %> |
+<%= link_to 'Back', course_item_posts_path(@item.nest_params) %>
 
 </div>

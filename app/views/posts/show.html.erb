@@ -1,11 +1,11 @@
 <% content_for :title, "#{@course.abbr} | #{@item.name} | Forum" %>
 
 <%= render '/layouts/nav', :navigation =>
-  [["Courses", courses_path],
-  ["#{@course.dept} #{@course.number}", @course],
-  [@item.category_s, course_items_path(@course, :category => @item.category.downcase)],
-  [@item.name, [@course, @item]],
-  ["Discussion", course_item_posts_path(@course, @item)]] %>
+  [["Courses", user_courses_path(@current_user)],
+   [@course.abbr, course_path(@course.params)],
+   [@item.category_s, course_items_path(@course.nest_params.merge :category => @item.category.downcase)],
+   [@item.name, course_item_path(@item.params)],
+   ["Discussion", course_item_posts_path(@item.nest_params)]] %>
 
 <div id="content" class="post_page">
   <% if @post.parent %>
@@ -23,9 +23,9 @@
       <%=h @post.title %>
     </span>
     <% if @current_user == @post.user %>
-        <%= link_to "Edit", edit_course_item_post_path(@course, @item, @post) %>
+        <%= link_to "Edit", edit_course_item_post_path(@post.params) %>
       <% else %>
-        <%= link_to "Reply", course_item_post_reply_path(@course, @item, @post) %>
+        <%= link_to "Reply", course_item_post_reply_path(@post.nest_params) %>
         <!--%= link_to "Private Message", "blah" %-->
       <% end %>
       <% if @post.parent %>
@@ -39,7 +39,7 @@
       <%= @post.sanitize %>
     </div>
     <div class="post_footer">
-      Tags: <%=h @post.tags %>
+      Tags: <%=h @post.tags_s %>
     </div>
   </div><br />
   

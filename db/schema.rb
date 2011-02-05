@@ -83,8 +83,6 @@ ActiveRecord::Schema.define(:version => 20101228131521) do
     t.integer  "parent_id"
     t.string   "title"
     t.text     "body"
-    t.string   "tags"
-    t.datetime "commented_at"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -125,6 +123,7 @@ ActiveRecord::Schema.define(:version => 20101228131521) do
     t.string   "privilege"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "school_id"
     t.string   "username"
     t.string   "email"
     t.string   "crypted_password"

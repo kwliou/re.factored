@@ -2,12 +2,13 @@
 
 <%= render '/layouts/nav', :navigation =>
   [["Courses", courses_path],
-  ["#{@course.dept} #{@course.number}", @course],
-  [@item.category_s, course_items_path(@course, :category => @item.category.downcase)],
-  [@item.name, [@course, @item]]] %>
+   ["#{@course.dept} #{@course.number}", course_path(@course.params)],
+   [@item.category_s, course_items_path(@course.nest_params.merge :category => @item.category.downcase)],
+   [@item.name, @item.params]] %>
 
 <div id="content">
-  <h1 style="display: inline"><%=h @item.name %></h1> <%= link_to 'Edit', edit_course_item_path(@course, @item) %>
+  <h1 class="context"><%=h @item.name %></h1>
+  <%= link_to 'Edit', edit_course_item_path(@item.params) %>
   <p>
     <span class="item_h2">Due <%=h @item.due_date_s %></span>
     &nbsp;<%=h time_ago_in_words(@item.due_date) %>
@@ -23,14 +24,14 @@
   
   <div class="item_h2">Description</div>
   <div class="item_p">
-    <%= sanitize @item.description, :attributes => 'abbr alt cite datetime height href name src title width rowspan colspan rel' %>
+    <%= sanitize @item.description, :attributes => Item.html_attributes %>
   </div>
   <div>
-    <%=h link_to 'Rate this item', course_item_iratings_path(@course, @item), :class => "item_h2" %>
+    <!--%=h link_to 'Rate this item', course_item_iratings_path(@course, @item), :class => "item_h2" %-->
   </div>
   <br />
   <div>
-    <%=h link_to 'Discussion', course_item_posts_path(@course, @item), :class => "item_h2" %>
+    <%=h link_to 'Discussion', course_item_posts_path(@item.nest_params), :class => "item_h2" %>
   </div>
   <br />
   

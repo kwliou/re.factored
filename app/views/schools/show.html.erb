@@ -3,12 +3,12 @@
 <div id="content">
   <h1 class="context"><%=h @school.name %></h1>
   <%= link_to @pretty_url, @school.url, :target => "_blank" %>
-  <p>
+  <p><%= link_to 'Add a department', new_school_department_path(@school) %></p>
     Departments
     <ul>
       <% @school.departments.each do |department| %>
         <li><%= @current_user.schools.include?(@school) ? (link_to department.name, [@school, department]) : department.name %></li>
       <% end %>
     </ul>
-  </p>
+  
 </div>

@@ -2,14 +2,14 @@
 
 <%= render '/layouts/nav', :navigation =>
   [["Courses", courses_path],
-  ["#{@course.dept} #{@course.number}", @course],
-  [@item.category_s, course_items_path(@course, :category => @item.category.downcase)],
-  [@item.name, [@course, @item]]] %>
+  ["#{@course.dept} #{@course.number}", course_path(@course.params)],
+  [@item.category_s, course_items_path(@course.nest_params.merge :category => @item.category.downcase)],
+  [@item.name, course_item_path]] %>
 
 <div id="content">
   <h1>Editing item</h1>
 
-  <% form_for([@course, @item]) do |f| %>
+  <% form_for([@course, @item], :url => course_item_path(@item.params)) do |f| %>
     <%= f.error_messages %>
 
     <p>
@@ -41,6 +41,6 @@
     </p>
   <% end %>
 
-  <%= link_to 'Show', [@course, @item] %> |
-  <%= link_to 'Back', course_items_path(@course) %>
+  <%= link_to 'Show', @item.params %> |
+  <%= link_to 'Back', course_items_path(@course.nest_params) %>
 </div>

@@ -1,0 +1,14 @@
+<% content_for :title, @profile ? 'My Courses' : "#{@user.name}'s Courses" %>
+
+<%= render '/layouts/nav', :no_semester => true, :navigation =>
+  [@profile ? ['My Profile', @user] : ['Users', users_path],
+  ['Courses', user_courses_path(@user)]] %>
+
+<div id="content">
+  <h1 class="context"><%=h @profile ? "My Courses" : "#{@user.name}'s courses" %></h1>
+  <p>
+    <% @user.courses.each do |course| %>
+      <%= link_to course.abbr, course.params %> (<%=h course.name %>)<br />
+    <% end %>
+  </p>
+</div>

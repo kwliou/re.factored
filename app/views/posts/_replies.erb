@@ -2,12 +2,12 @@
   <div class='post_reply'>
     <div class="post_header">
       <% if @current_user == reply.user %>
-        <%= link_to "Edit", edit_course_item_post_path(@course, @item, reply) %> | 
+        <%= link_to "Edit", edit_course_item_post_path(reply.params) %> |
       <% else %>
-        <%= link_to "Reply", course_item_post_reply_path(@course, @item, reply) %> | 
+        <%= link_to "Reply", course_item_post_reply_path(reply.nest_params) %> |
         <!--%= link_to "Private Message", "blah" %> |-->
       <% end %>
-      <%= link_to "Permalink", course_item_post_path(@course, @item, reply) %>
+      <%= link_to "Permalink", course_item_post_path(reply.params) %>
     </div>
     <div class="post_body">
       <%= reply.sanitize %>
@@ -18,7 +18,7 @@
       <time><%=h reply.created_at_time_s %></time>
     </div>
     <div class="post_footer">
-      Tags: <%=h reply.tags %>
+      Tags: <%=h reply.tags_s %>
     </div>
     <%= render 'replies', :post => reply %>
   </div>

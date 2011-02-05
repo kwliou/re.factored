@@ -81,7 +81,7 @@ class ItemsController < ApplicationController
     respond_to do |format|
       if @item.update_attributes(params[:item])
         @item.update_attributes(:due_date => @item.due_date - DateTime.now.utc_offset) # Rails doesn't do this automatically!
-        format.html { redirect_to([@course, @item], :notice => 'Item was successfully updated.') }
+        format.html { redirect_to(course_item_url, :notice => 'Item was successfully updated.') }
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }

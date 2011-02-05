@@ -9,10 +9,11 @@ ActionController::Routing::Routes.draw do |map|
   map.logout 'logout',     :controller => :user_sessions, :action => :destroy
 
   map.resources :user_sessions, :enrollments
- 
+
   map.resources :users, :requirements => {:id => /[^\?\/]+/} do |user|
     user.resources :ratings, :iratings
     user.schools 'schools', :controller => :schools, :action => :index_user, :requirements => { :user_id => /([^\/?]+)/ }
+    user.courses 'courses', :controller => :users,   :action => :courses, :requirements => { :user_id => /([^\/?]+)/ }
     user.posts     'posts', :controller => :posts,   :action => :index_user, :requirements => { :user_id => /([^\/?]+)/ }
   end
 
@@ -39,10 +40,10 @@ ActionController::Routing::Routes.draw do |map|
     course.resources :ratings, :path_prefix => ':school_id/:course_id/:term:year', :requirements => {:term => /../, :year => /\d\d/}
     # :requirements is for items with periods in them ex. Chapter 2.1 Questions
     course.resources :items,   :path_prefix => ':school_id/:course_id/:term:year', :requirements => {:id => /[^\?\/]+/, :term => /../, :year => /\d\d/} do |item|
-      item.ajaxupdate 'posts/update_results', :controller => :posts, :action => :update_results, :method => :get, :requirements => {:item_id => /[^\?\/]+/}
+      item.ajaxupdate 'posts/update_results', :controller => :posts, :action => :update_results, :method => :get, :requirements => {:item_id => /[^\?\/]+/, :term => /../, :year => /\d\d/}
       item.resources :iratings, :requirements => {:item_id => /[^\?\/]+/}
       item.resources :posts,    :requirements => {:item_id => /[^\?\/]+/, :term => /../, :year => /\d\d/} do |post|
-        post.reply 'reply', :controller => :posts, :action => :new_post_reply, :requirements => {:item_id => /[^\?\/]+/}
+        post.reply 'reply', :controller => :posts, :action => :new_post_reply, :requirements => {:item_id => /[^\?\/]+/, :term => /../, :year => /\d\d/}
       end
     end
   end

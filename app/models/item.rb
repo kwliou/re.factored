@@ -11,15 +11,31 @@ class Item < ActiveRecord::Base
 
   before_create { |item| item.category = item.category.cap }
 
+  # for description text
+  def Item.html_attributes
+    'abbr alt cite class datetime height href name src title width rowspan colspan rel'
+  end
+
   def to_param
     name.gsub(' ', '_')
   end
   def params
-    course.nest_params.merge(:id => id)
+    course.nest_params.merge(:id => to_param)
   end
   def nest_params
-    course.nest_params.merge(:item_id => id)
+    course.nest_params.merge(:item_id => to_param)
   end
+  def Item.find_by_params(params)
+    #return nil unless params[:item_id] || params[:id]
+    course = Course.find_by_params(params)
+    item_id = (params[:item_id] || params[:id]).gsub('_', ' ')
+    course.items.find_by_name(item_id)
+  end
+
+  def tags
+    (posts.map {|i| i.tags.map {|t| t.value} }).flatten.sort.uniq
+  end
+#  
   def histogram
     # Median is easy
     grades = self.grades.sort { |a, b| a.points_received <=> b.points_received }

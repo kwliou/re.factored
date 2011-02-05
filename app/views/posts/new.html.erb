@@ -1,27 +1,27 @@
 <% content_for :title, "#{@course.abbr} | #{@item.name} | Forum | New Post" %>
 
 <%= render '/layouts/nav', :navigation =>
-  [["Courses", courses_path],
-  ["#{@course.dept} #{@course.number}", @course],
-  [@item.category_s, course_items_path(@course, :category => @item.category.downcase)],
-  [@item.name, [@course, @item]],
-  ["Discussion", course_item_posts_path(@course, @item)]] %>
-<div id="content">
+  [["Courses", user_courses_path(@current_user)],
+  [@course.abbr, course_path(@course.params)],
+  [@item.category_s, course_items_path(:category => @item.category.downcase)],
+  [@item.name, @item.params],
+  ["Discussion", course_item_posts_path]] %>
+<div id="content" class="form">
   <h1>New post under forum for: <%=h @item.name %></h1>
-  <% form_for([@course, @item, @post]) do |f| %>
+  <% form_for([@course, @item, @post], :url => course_item_posts_path) do |f| %>
     <%= f.error_messages %>
 
     <p>
-      <%= f.label :title %><br />
+      <%= f.label :title %>
       <%= f.text_field :title %>
     </p>
     <p>
-      <%= f.label :body %><br />
+      <%= f.label :body, {}, :style => 'vertical-align: top' %>
       <%= f.text_area :body %>
     </p>
     <p>
-      <%= f.label :tags %><br />
-      <%= f.text_field :tags %>&nbsp;&nbsp; e.g. tip, criticism, praise, question, problem 1
+      <%= label_tag 'tags', 'Tags' %>
+      <%= text_field_tag 'tags' %>&nbsp;&nbsp; e.g. tip, criticism, praise, question, problem 1
     </p>
     <!--p>
       <% f.label :commented_at %><br />
@@ -32,5 +32,5 @@
     </p>
   <% end %>
 
-<%= link_to 'Back', course_item_posts_path(@course, @item) %>
+<%= link_to 'Back', course_item_posts_path %>
 </div>

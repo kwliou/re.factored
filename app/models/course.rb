@@ -36,7 +36,7 @@ class Course < ActiveRecord::Base
   end
   
   def Course.find_by_params(params)
-    dept, number = (params[:id] || params[:course_id]).split('_')
+    dept, number = (params[:course_id] || params[:id]).split('_')
     term = params[:term]
     year = "20#{params[:year]}"
     school = School.find_by_param(params[:school_id])

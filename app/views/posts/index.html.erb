@@ -17,11 +17,11 @@
 </noscript>
 
 <%= render '/layouts/nav', :navigation =>
-  [["Courses", courses_path],
-  ["#{@course.dept} #{@course.number}", @course],
-  [@item.category_s, course_items_path(@course, :category => @item.category.downcase)],
-  [@item.name, [@course, @item]],
-  ["Discussion", course_item_posts_path(@course, @item)]] %>
+  [["Courses", user_courses_path(@current_user)],
+  ["#{@course.dept} #{@course.number}", course_path(@course.params)],
+  [@item.category_s, course_items_path(@course.nest_params.merge :category => @item.category.downcase)],
+  [@item.name, @item.params],
+  ["Discussion", course_item_posts_path(@item.nest_params)]] %>
 
 <!--
 Allowed HTML tags:
@@ -39,45 +39,36 @@ abbr alt cite class datetime height href name src title width xml:lang
     shown = 'block';
     hidden = document.getElementById(tr_id).style.display != shown;
     a.className = hidden ? 'post_title_max' : 'post_title_min';
-    //a.innerHTML = (hidden ? '&#9652;' : '&#9662;') + a.innerHTML.substring(1);
     document.getElementById(tr_id).style.display = hidden ? shown : 'none';
-  /* jQuery is really laggy on my laptop, so better to not use it if it adds nothing.
-   * $("#"+tr_id).slideToggle("fast");
-   */
   }
-  function hideCheckBoxes() { // UNUSED
-    var inputs = document.forms[0].getElementsByTagName('input');
-    for (var i in inputs) {
-      if (inputs[i].type == 'checkbox')
-        inputs[i].style.display = 'none';
-    }
-  }
-  //window.onload = hideCheckBoxes;
   // -->
 </script>
 <div id="content">
-  <%= link_to 'New post', new_course_item_post_path(@course, @item) %>
+  <%= link_to 'New post', new_course_item_post_path(@item.nest_params) %>
   <% form_remote_tag :update => 'forum_posts',
-            #:method => :get,
-             :url => course_item_ajaxupdate_url(@course, @item),
-             :loading => "document.getElementById('forum_posts').innerHTML = 'Searching...'",
-             :failure => "document.getElementById('forum_posts').innerHTML = 'Sorry, there was a problem retrieving results.'",
-             :html => { :action => course_item_posts_path(@course, @item), :method => :get } do %>
+                     :url => course_item_ajaxupdate_url(@item.params),
+                     :loading => "document.getElementById('forum_posts').innerHTML = 'Searching...'",
+                     :failure => "document.getElementById('forum_posts').innerHTML = 'Sorry, there was a problem retrieving results.'",
+                     :html => { :action => course_item_posts_path(@item.nest_params), :method => :get } do %>
+  <p>
     <ul id="forum_tags">
       <li>Filter by tags:</li>
       <% @all_tags.each do |tag| %>
         <li>
           <!-- Didn't use document.getElementById('checktag_#{tag}') -->
           <%= check_box_tag "tags[]", tag, @sel_tags.include?(tag), :style => 'display: none' %><%= link_to tag,
-            course_item_posts_url(@course, @item, :tag => tag),
+            course_item_posts_path(@item.nest_params.merge :tag => tag),
             :onclick => "if (this.className == 'unselected') { this.className = 'selected'; this.previousSibling.checked = true; } else { this.className = 'unselected'; this.previousSibling.checked = false; } return false",
             :class => @sel_tags.include?(tag) ? "selected" : "unselected" %><%= ', ' if @all_tags.last != tag %>
         </li>
       <% end %>
-    </ul><div id="forum_tags_search">
+    </ul>
+  </p>
+  <div id="forum_tags_search">
     <%= label_tag 'include_all', 'Match all tags?' %>
     <%= check_box_tag 'include_all', 'include_all', @include_all %>
-    <%= submit_tag 'Search', :name => nil %></div>
+    <%= submit_tag 'Search', :name => nil %>
+  </div>
   <% end %>
   <table id="forum_posts">
     <!--tr>

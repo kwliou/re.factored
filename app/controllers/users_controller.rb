@@ -36,6 +36,15 @@ class UsersController < ApplicationController
       format.xml  { render :xml => @user }
     end
   end
+  
+  def courses
+    @profile = @current_user == @user
+
+    respond_to do |format|
+      format.html # show.html.erb
+      format.xml  { render :xml => @user }
+    end
+  end
 
   # GET /users/new
   # GET /users/new.xml
@@ -112,5 +121,6 @@ private
   end
 
   def get_user
-    @user = User.find_by_username(params[:id]) if params[:id]
+    username = params[:user_id] || params[:id]
+    @user = User.find_by_username(username) if username
   end
