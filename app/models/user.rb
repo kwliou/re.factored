@@ -34,8 +34,9 @@ class User < ActiveRecord::Base
 
   def school_courses
     course_hash = {}
-    schools.each { |s| course_hash[s] = [] }
-    courses.each {|c| course_hash[c.department.school].unshift(c) }
+    schools.each do |school|
+      course_hash[school] = courses.select {|c| school == c.department.school}
+    end
     return course_hash
   end
 

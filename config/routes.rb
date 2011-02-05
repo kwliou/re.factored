@@ -14,7 +14,7 @@ ActionController::Routing::Routes.draw do |map|
     user.resources :ratings, :iratings
     user.schools 'schools', :controller => :schools, :action => :index_user, :requirements => { :user_id => /([^\/?]+)/ }
     user.courses 'courses', :controller => :users,   :action => :courses, :requirements => { :user_id => /([^\/?]+)/ }
-    user.posts     'posts', :controller => :posts,   :action => :index_user, :requirements => { :user_id => /([^\/?]+)/ }
+    user.posts     'posts', :controller => :users,   :action => :posts, :requirements => { :user_id => /([^\/?]+)/ }
   end
 
   map.resources :schools, :except => [:show, :update, :edit] do |school| # path_prefix, as
