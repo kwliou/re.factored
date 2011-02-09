@@ -14,16 +14,6 @@ class SchoolsController < ApplicationController
     end
   end
 
-  def index_user
-    @user = User.find_by_username(params[:user_id])
-    @schools = @user.schools
-    @profile = @current_user == @user
-    respond_to do |format|
-      format.html # index_user.html.erb
-      format.xml  { render :xml => @schools }
-    end
-  end
-  
   # GET /schools/1
   # GET /schools/1.xml
   def show

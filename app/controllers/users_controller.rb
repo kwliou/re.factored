@@ -14,18 +14,7 @@ class UsersController < ApplicationController
       format.xml  { render :xml => @current_user }
     end
   end
-  
-  def performance
-    user = User.find(params[:id])
-    data = user.performance()
-    
-    # Return performance encoded as JSON
-    performance = ActiveSupport::JSON.encode(data)
-    respond_to do |format|
-        format.json  { render :json => performance }
-    end
-  end
-  
+
   # GET /users/1
   # GET /users/1.xml
   def show
@@ -36,14 +25,24 @@ class UsersController < ApplicationController
       format.xml  { render :xml => @user }
     end
   end
-  
+
+  def schools
+    @user = User.find_by_username(params[:user_id])
+    @schools = @user.schools
+    @profile = @current_user == @user
+    respond_to do |format|
+      format.html # schools.html.erb
+      format.xml  { render :xml => @schools }
+    end
+  end
+
   def courses
     @courses = @user.courses
     @profile = @current_user == @user
 
     respond_to do |format|
-      format.html # show.html.erb
-      format.xml  { render :xml => @user }
+      format.html # courses.html.erb
+      format.xml  { render :xml => @courses }
     end
   end
 
@@ -52,8 +51,8 @@ class UsersController < ApplicationController
     @profile = @current_user == @user
 
     respond_to do |format|
-      format.html # show.html.erb
-      format.xml  { render :xml => @user }
+      format.html # posts.html.erb
+      format.xml  { render :xml => @posts }
     end
   end
 
@@ -116,7 +115,19 @@ class UsersController < ApplicationController
       format.xml  { head :ok }
     end
   end
+
+  def performance
+    user = User.find(params[:id])
+    data = user.performance()
+
+    # Return performance encoded as JSON
+    performance = ActiveSupport::JSON.encode(data)
+    respond_to do |format|
+        format.json  { render :json => performance }
+    end
+  end  
 end
+
 private
   def get_current_user
     @current_user = current_user

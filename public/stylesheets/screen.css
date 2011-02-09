@@ -1,7 +1,29 @@
 @font-face {
     font-family: "Museo Slab 500";
-    src: url('/Museo_Slab.otf');
+    src: url("/fonts/Museo_Slab.otf");
     font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: "Museo Sans 500";
+    src: url("/fonts/MuseoSans.otf");
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: "Arvo";
+    src: url("/fonts/Arvo-Regular_v104.eot");
+    src: url("/fonts/Arvo-Regular_v104.ttf") format('truetype'),
+         url("/fonts/Arvo-Regular_v104.otf") format('opentype');
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: "Arvo";
+    src: url("/fonts/Arvo-Bold_v105.eot");
+    src: url("/fonts/Arvo-Bold_v105.ttf") format('truetype'),
+         url("/fonts/Arvo-Bold_v105.otf") format('opentype');
+    font-weight: bold;
     font-style: normal;
 }
 
@@ -286,7 +308,6 @@ we don't have to rely on proprietary attributes but there's no time
 }
 #courses .name {
     text-decoration: none;
-    margin-right: 2px;
 }
 .course {
     padding-left: 2px;

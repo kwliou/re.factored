@@ -95,5 +95,5 @@ private
   end
 
   def get_school
-    @school = School.find_by_param(params[:school_id])
+    @school = @current_user.schools.find_by_param(params[:school_id])
   end

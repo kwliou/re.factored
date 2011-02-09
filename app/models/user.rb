@@ -23,7 +23,15 @@ class User < ActiveRecord::Base
   def to_param
     username
   end
-  
+
+  def school_courses
+    schools.all(:order => 'name DESC').map do |school|
+      [[school],
+       (courses.select {|c| school == c.school}).sort_by {|c| c.abbr}
+      ]
+    end
+  end
+
   def rated_course(course)
   	course.ratings.find_by_user_id(self.id)
 	end
@@ -31,14 +39,6 @@ class User < ActiveRecord::Base
   def rated_item(item)
   	item.iratings.find_by_user_id(self.id)
 	end
-
-  def school_courses
-    course_hash = {}
-    schools.each do |school|
-      course_hash[school] = courses.select {|c| school == c.department.school}
-    end
-    return course_hash
-  end
 
 	def items_with_grades(course)
     items = course.items

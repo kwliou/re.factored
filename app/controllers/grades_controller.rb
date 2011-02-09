@@ -96,7 +96,7 @@ private
     redirect_to root_url if @current_user.nil?
   end
   def get_school
-    @school = School.find_by_param(params[:school_id])
+    @school = @current_user.schools.find_by_param(params[:school_id])
   end
   def get_course
     @course = Course.find_by_params(params)

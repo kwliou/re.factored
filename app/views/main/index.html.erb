@@ -6,7 +6,7 @@
         <% if @current_user.schools.empty? %>
           <%= link_to 'Time to enroll in a school!', schools_path %>
         <% else %>
-          <% @school_courses.each_pair do |school, courses| %>
+          <% @school_courses.each do |school, courses| %>
             <% unless @single_school %>
               <span style="font-size:13pt; font-weight: bold"><%=h school.name %></span><br />
             <% end %>
@@ -16,7 +16,7 @@
               <% courses.each do |course| %>
                 <% link_to course_path(course.params), :class => 'name' do %>
                   <div>
-                    <span class="course"><%=h course.dept %> <%=h course.number %></span>
+                    <span class="course"><%=h course.abbr %></span>
                     <span class="course_info"><%=h course.name %></span>
                   </div>
                 <% end %>
