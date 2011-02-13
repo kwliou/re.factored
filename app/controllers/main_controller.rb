@@ -6,12 +6,13 @@ class MainController < ApplicationController
     if @current_user
       @single_school = (@current_user.schools.length == 1)
       @school_courses = @current_user.school_courses
-      @courses = @current_user.courses
-      course_ids = @courses.map {|c| c.id}
-      @items = Item.find(:all, :limit => 10, :conditions => ['course_id IN (?) AND due_date >= ?', course_ids, Time.zone.now], :order => 'due_date')
-      all_items = Item.find(:all, :limit => 10, :conditions => ['course_id IN (?)', course_ids], :order => 'due_date')
+
+      course_ids = @current_user.courses.map {|c| c.id}
+      all_items = Item.all(:limit => 10, :conditions => ['course_id IN (?)', course_ids], :order => 'due_date DESC')
       item_ids = all_items.map {|i| i.id}
-      @posts = Post.find(:all, :limit => 2, :conditions => ['item_id IN (?)', item_ids], :order => 'created_at DESC')
+      @posts = Post.all(:limit => 2, :conditions => ['item_id IN (?)', item_ids], :order => 'created_at DESC')
+      # calendar
+      @items = Item.all(:limit => 10, :conditions => ['course_id IN (?) AND due_date >= ?', course_ids, Time.zone.now], :order => 'due_date')
     end
     respond_to do |format|
       format.html # index.html.erb

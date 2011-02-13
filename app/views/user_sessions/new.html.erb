@@ -1,12 +1,16 @@
-<% form_for @user_session do |f| %>
-  <%= f.error_messages %>
-  <p>
-    <%= f.label :username %>
-    <%= f.text_field :username %>
-  </p>
-  <p>
-    <%= f.label :password %>
-    <%= f.password_field :password %>
-  </p>
-  <%= f.submit "Login" %>
-<% end %>
+<% content_for :title, 'Login | ' %>
+
+<div id="content" class="form" style="text-align: center;">
+  <% form_for @user_session do |f| %>
+    <%= f.error_messages %>
+    <p>
+      <%= f.label :username %>
+      <%= f.text_field :username %>
+    </p>
+    <p>
+      <%= f.label :password %>
+      <%= f.password_field :password %>
+    </p>
+    <%= f.submit 'Login' %>
+  <% end %>
+</div>

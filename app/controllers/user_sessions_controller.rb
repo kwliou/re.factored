@@ -1,6 +1,8 @@
 class UserSessionsController < ApplicationController
+  layout 'main'
 
   def new
+    @current_user = current_user
     @user_session = UserSession.new
   end
 
@@ -10,7 +12,7 @@ class UserSessionsController < ApplicationController
       #flash[:notice] = "Successfully logged in."
       redirect_to root_url
     else
-      redirect_to root_url(:errors => "Invalid username or password")
+      redirect_to login_url(:errors => "Invalid username or password")
       #render :action => :new
     end
   end

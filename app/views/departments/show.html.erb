@@ -3,8 +3,12 @@
 <div id="content">
   <h1>Department of <%=h @department.name %></h1>
   <p><%= link_to 'Add a course', new_course_path %></p>
-  <% @department.courses.each do |course| %>
-  <span style="text-decoration: underline"><%= link_to course.abbr, course_path(course.params), :style => 'text-decoration: none;  font-weight: bold' %></span>
-  <em><%=h course.name %></em>
-  <% end %>
+  <ul>
+    <% @courses.each do |course| %>
+      <li>
+        <%= link_to course.abbr, course_path(course.params) %>
+        (<%=h course.name %>)
+      </li>
+    <% end %>
+  </ul>
 </div>

@@ -7,7 +7,13 @@ class User < ActiveRecord::Base
   has_many :grades
   has_many :ratings
   has_many :iratings
-  
+
+  @@admin = "admin"
+
+  def admin?
+    privilege == @@admin
+  end
+
   def to_s
     username
   end
@@ -25,10 +31,8 @@ class User < ActiveRecord::Base
   end
 
   def school_courses
-    schools.all(:order => 'name DESC').map do |school|
-      [[school],
-       (courses.select {|c| school == c.school}).sort_by {|c| c.abbr}
-      ]
+    schools.all(:order => 'name').map do |school|
+      [[school], (courses.select {|c| school == c.school}).sort_by {|c| c.abbr}]
     end
   end
 

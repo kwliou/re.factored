@@ -32,7 +32,7 @@ ActionController::Routing::Routes.draw do |map|
   map.connect     ':school_id/:id/:term:year',      :controller => :courses, :action => :update, :conditions => { :method => :put }, :requirements => { :term => /../}
   map.edit_course ':school_id/:id/:term:year/edit', :controller => :courses, :action => :edit,   :requirements => { :term => /../ }
 
-  map.resources :courses, :except => [:show], :path_prefix => ':school_id' do |course|#:collection => {:auto_complete_for_department_name => :get } do |course|
+  map.resources :courses, :except => :show, :path_prefix => ':school_id' do |course|#:collection => {:auto_complete_for_department_name => :get } do |course|
     course.info        'info',        :controller => :courses, :action => :info,        :path_prefix => ':school_id/:id/:term:year', :requirements => {:term => /../, :year => /\d\d/}
     course.subscribe   'subscribe',   :controller => :courses, :action => :subscribe,   :path_prefix => ':school_id/:id/:term:year', :requirements => {:term => /../, :year => /\d\d/}
     course.unsubscribe 'unsubscribe', :controller => :courses, :action => :unsubscribe, :path_prefix => ':school_id/:id/:term:year', :requirements => {:term => /../, :year => /\d\d/}

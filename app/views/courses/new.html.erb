@@ -24,7 +24,7 @@
     </p>
     <p>
       <%= f.label :department_id, 'Department' %>
-      <%= f.select :department_id, @departments, {}, :style => 'min-width: 15.4em' %>
+      <%= f.select :department_id, @departments %>
       <%= link_to 'Add a department', new_school_department_path(@school), :style => 'margin-left: 10px; text-transform: lowercase; font-variant: small-caps' %>
       <!--
       Auto complete isn't useful enough, kinda slow right now

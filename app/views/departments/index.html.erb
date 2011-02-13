@@ -1,24 +1,14 @@
+<% content_for :title, "#{@school.name} | Departments" %>
+
 <div id="content">
-  <h1>Listing departments</h1>
-
-  <table>
-    <tr>
-      <th>Name</th>
-      <th>Abbr</th>
-    </tr>
-
+  <h1><%=h @school.name %> departments</h1>
+  <p><%= link_to 'New department', new_school_department_path %></p>
+  <ul>
   <% @departments.each do |department| %>
-    <tr>
-      <td><%=h department.name %></td>
-      <td><%=h department.abbr %></td>
-      <td><%= link_to 'Show', [@school, department] %></td>
-      <td><%= link_to 'Edit', edit_school_department_path(@school, department) %></td>
-      <!--td>%= link_to 'Destroy', destroy_department_path(@school, department), :confirm => 'Are you sure?', :method => :delete %></td-->
-    </tr>
+    <li>
+      <%= link_to department.name, [@school, department] %>
+      (<%=h department.abbr %>)
+    </li>
   <% end %>
-  </table>
-
-  <br />
-
-  <%= link_to 'New department', new_school_department_path %>
+    </ul>
 </div>

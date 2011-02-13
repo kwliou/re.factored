@@ -23,13 +23,6 @@ class CoursesController < ApplicationController
   # GET /courses
   # GET /courses.xml
   def index
-#    if params[:semester]
-#      term, year = params[:semester].split(" ")
-#      @semester = params[:semester]
-#      @courses = Course.find(:all, :conditions => {:term => term, :year => year})
-#    else
-#      @courses = Course.find(:all, :conditions => {:term => 'Fall', :year => 2010})
-#    end
     @courses = Course.all
     @semesters = Course.all_semesters
     
@@ -64,7 +57,7 @@ class CoursesController < ApplicationController
   # GET /courses/new.xml
   def new
     @course = Course.new
-    @departments = Department.find(:all, :order => 'name').map { |c| [c.name, c.id] }
+    @departments = @school.departments.find(:all, :order => 'name').map { |c| [c.name, c.id] }
     @years = Course.year_limits
     respond_to do |format|
       format.html # new.html.erb

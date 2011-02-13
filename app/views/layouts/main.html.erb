@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
   <head>
     <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
-    <title>re.factored<%=h yield :title %></title>
+    <title><%=h yield :title %>re.factored</title>
     <link rel="shortcut icon" type="image/ico" href="/images/favicon.ico" />
     <link rel="icon" type="image/ico" href="/images/favicon.ico" />
     <%= stylesheet_link_tag 'scaffold' %>
@@ -55,9 +55,9 @@
                 <div id="login_form">
                   <% form_for @user_session do |f| %>
                     <span class="input_label"><%= f.label :username, "Username", :id => "username_label" %></span>
-                    <%= f.text_field :username, :style => "width: 9.5em" %>
+                    <%= f.text_field :username %>
                     <span class="input_label"><%= f.label :password, "Password", :id => "password_label" %></span>
-                    <%= f.password_field :password, :style => "width: 9.5em" %>
+                    <%= f.password_field :password %>
                     <%= f.check_box :remember_me, {}, true, false %>
                     <%= f.submit "", :class => "login_button", :onfocus => "this.blur()", :tabindex => 1000 %>
                     <a class="login_button_load"></a>

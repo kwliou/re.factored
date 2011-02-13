@@ -1,17 +1,16 @@
 class UsersController < ApplicationController
   before_filter :get_user # :get_user works on Heroku BUT WHY???
   before_filter :get_current_user, :except => [:new, :create]
-
+  before_filter :check_privilege, :only => :index
   layout 'scaffold', :except => [:new]
-  #layout 'main', :except => [:new]
+  
   # GET /users
   # GET /users.xml
   def index
-    #@current_user = User.find(params[:id])
-    @users = User.find(:all)
+    @users = User.all
     respond_to do |format|
       format.html # index.html.erb
-      format.xml  { render :xml => @current_user }
+      format.xml  { render :xml => @users }
     end
   end
 
@@ -62,7 +61,7 @@ class UsersController < ApplicationController
     @user = User.new
     @user_session = UserSession.new
     respond_to do |format|
-      format.html { render  :layout => 'main' } # new.html.erb
+      format.html { render :layout => 'main' } # new.html.erb
       format.xml  { render :xml => @user }
     end
   end
@@ -137,4 +136,8 @@ private
   def get_user
     username = params[:user_id] || params[:id]
     @user = User.find_by_username(username) if username
+  end
+
+  def check_privilege
+    redirect_to root_url if !@current_user.admin?
   end

@@ -19,7 +19,7 @@ class DepartmentsController < ApplicationController
   # GET /departments/1.xml
   def show
     @department = Department.find_by_param(params[:id])
-    
+    @courses = @department.courses.all(:order => 'number')
     respond_to do |format|
       format.html # show.html.erb
       format.xml  { render :xml => @department }
